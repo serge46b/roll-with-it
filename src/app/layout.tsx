@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import localFont from "next/font/local"
-import "/globals.css"
+import "@/app/globals.css"
 
 const exo2 = localFont({
   src: "../../public/Exo2-VariableFont_wght.ttf",
