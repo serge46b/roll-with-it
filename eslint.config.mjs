@@ -72,7 +72,16 @@ const eslintConfig = defineConfig([
             {
               from: { type: "app" },
               allow: {
-                to: { type: ["app", "components", "modules", "shared"] },
+                to: { type: ["app", "components", "shared"] },
+              },
+            },
+            {
+              from: { type: "app" },
+              allow: {
+                to: {
+                  type: "modules",
+                  internalPath: "index.{ts,tsx}",
+                },
               },
             },
             {
