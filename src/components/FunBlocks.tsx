@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import { useState } from "react"
 
@@ -7,9 +9,9 @@ export function BlocksPole({ text, children }: { text: string, children?: React.
 
   return (
       <div
-          className="w-[21.25rem] bg-black/70 transition-all duration-300 flex flex-col items-center"
+          className="flex min-w-0 max-w-[21.25rem] flex-1 basis-0 flex-col items-center bg-black/70 transition-all duration-300"
           style={{
-              height: isOpen ? "40vh" : "2.8rem",
+              height: isOpen ? "min(40vh, calc(100vh - 3.5rem))" : "2.8rem",
               borderTopRightRadius: "0.625rem",
               borderTopLeftRadius: "0.625rem",
           }}
@@ -27,7 +29,7 @@ export function BlocksPole({ text, children }: { text: string, children?: React.
               </>
           ) : (
               <button
-                  className="mt-1 cursor-pointer text-white text-2xl font-exo2"
+                  className="mt-1 w-full cursor-pointer truncate px-2 text-center text-white text-2xl font-exo2"
                   onClick={() => setIsOpen(true)}>
                   {text}
               </button>
