@@ -1,10 +1,19 @@
-export function ActionPanelFrame({ className = "" , width, height }: { className?: string , width: number, height: number }) {
-    return (
-      <svg
-        className={`absolute h-[${height}px] w-[${width}px] ${className}`}
-        viewBox={`0 0 ${width} ${height}`}
-        width={width}
-        height={height}
+export function ActionPanelFrame({
+  className = "",
+  width,
+  height,
+}: {
+  className?: string
+  width: number
+  height: number
+}) {
+  return (
+    <svg
+      className={`absolute ${className}`}
+      style={{ width, height }}
+      viewBox={`0 0 ${width} ${height}`}
+      width={width}
+      height={height}
         role="presentation"
         aria-hidden="true"
       >

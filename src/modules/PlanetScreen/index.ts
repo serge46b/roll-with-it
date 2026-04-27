@@ -1,1 +1,1 @@
-export { default as PlanetScreen } from "./components/Screen"
+export { default as PlanetScreen } from "./components/page"

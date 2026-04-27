@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { DEFAULT_BACKGROUND_BLUR } from "../constants/Gradients"
 import { DEFAULT_SHADOW } from "../constants/Shadows"
 
@@ -29,7 +30,7 @@ export default function PlanetMainMenu({
     >
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-center text-white">
         {showAddIcon ? (
-          <p className="text-[64px] leading-none font-light text-white/85">+</p>
+          <Image src="/svgs/Plus.svg" alt="" width={60} height={60} />
         ) : (
           <div className="flex w-[220px] flex-col items-center text-center">
             <p className="leading-none font-semibold tracking-[0.05em] whitespace-nowrap">{title}</p>
