@@ -1,16 +1,10 @@
 "use client"
 import twclsx from "@/shared/utils/twClassMerge"
 import Image from "next/image"
-import { createContext, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 // import { fetchMapImage } from "../api/fetchers"
-
-function mouseXY2WorldXY(mouseX: number, mouseY: number, world: HTMLDivElement) {
-  const XInViewport = mouseX - world.getBoundingClientRect().x
-  const YInViewport = mouseY - world.getBoundingClientRect().y
-  const XInWorld = XInViewport / (Number(world.style.scale) || 1)
-  const YInWorld = YInViewport / (Number(world.style.scale) || 1)
-  return { XInWorld, YInWorld }
-}
+import { mouseXY2WorldXY } from "../helpers/CoordTransformers"
+import { WorldTransformContext, WorldTransformContextInterface } from "../context/WorldTransform"
 
 function genWheelHandler(world: HTMLDivElement) {
   return (e: WheelEvent) => {
@@ -63,22 +57,11 @@ function genWindow2WorldTransform(world: HTMLDivElement) {
 
 function genAlignToGrid(world: HTMLDivElement, gridSize: number) {
   return (x: number, y: number) => {
-    const { XInWorld, YInWorld } = mouseXY2WorldXY(x, y, world)
-    const xInWorld = Math.round(XInWorld / gridSize) * gridSize
-    const yInWorld = Math.round(YInWorld / gridSize) * gridSize
+    const { xInWorld, yInWorld } = mouseXY2WorldXY(x, y, world)
+    // TODO: Write snap math
     return { xInWorld, yInWorld }
   }
 }
-
-interface WorldTransformContextInterface {
-  window2WorldTransform: (x: number, y: number) => { XInWorld: number; YInWorld: number }
-  alignToGrid: (x: number, y: number) => { xInWorld: number; yInWorld: number }
-}
-
-const WorldTransformContext = createContext<WorldTransformContextInterface>({
-  window2WorldTransform: () => ({ XInWorld: 0, YInWorld: 0 }),
-  alignToGrid: () => ({ xInWorld: 0, yInWorld: 0 }),
-})
 
 export default function MapDisplay({
   mapImage,
@@ -97,8 +80,10 @@ export default function MapDisplay({
   const viewportRef = useRef<HTMLDivElement>(null)
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [worldTransformContext, setWorldTransformContext] = useState<WorldTransformContextInterface>({
-    window2WorldTransform: () => ({ XInWorld: 0, YInWorld: 0 }),
+    window2WorldTransform: () => ({ xInWorld: 0, yInWorld: 0 }),
     alignToGrid: () => ({ xInWorld: 0, yInWorld: 0 }),
+    addEventListenerOnContainer: () => {},
+    removeEventListenerOnContainer: () => {},
   })
 
   useEffect(() => {
@@ -109,7 +94,12 @@ export default function MapDisplay({
     const { onMouseDown, onmousemove, onMouseUp } = genPanHandlers(world, viewport)
     const window2WorldTransform = genWindow2WorldTransform(world)
     const alignToGrid = genAlignToGrid(world, gridSize)
-    setWorldTransformContext({ window2WorldTransform, alignToGrid })
+    setWorldTransformContext({
+      window2WorldTransform,
+      alignToGrid,
+      addEventListenerOnContainer: viewport.addEventListener,
+      removeEventListenerOnContainer: viewport.removeEventListener,
+    })
     viewport.addEventListener("wheel", handleWheel)
     viewport.addEventListener("mousedown", onMouseDown)
     return () => {
