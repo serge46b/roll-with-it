@@ -18,9 +18,13 @@ export default function DraggableToken({ data, gridSize: grid_size }: { data: To
   useEffect(() => {
     if (!tokenRef.current) return
     const token = tokenRef.current
+    let shiftX = 0
+    let shiftY = 0
     const onMouseDown = (e: MouseEvent) => {
       if (!token || e.button !== 0) return
       e.preventDefault()
+      shiftX = e.clientX - token.getBoundingClientRect().x
+      shiftY = e.clientY - token.getBoundingClientRect().y
       token.style.cursor = "grabbing"
       addEventListenerOnContainer("mousemove", onmousemove)
       addEventListenerOnContainer("mouseup", onMouseUp)
@@ -28,13 +32,13 @@ export default function DraggableToken({ data, gridSize: grid_size }: { data: To
     const onmousemove = (e: MouseEvent) => {
       if (!token) return
       e.preventDefault()
-      const { xInWorld, yInWorld } = window2WorldTransform(e.clientX, e.clientY)
+      const { xInWorld, yInWorld } = window2WorldTransform(e.clientX - shiftX, e.clientY - shiftY)
       token.style.left = `${xInWorld}px`
       token.style.top = `${yInWorld}px`
     }
     const onMouseUp = (e: MouseEvent) => {
       e.preventDefault()
-      const { xInWorld, yInWorld } = alignToGrid(e.clientX, e.clientY)
+      const { xInWorld, yInWorld } = alignToGrid(e.clientX - shiftX, e.clientY - shiftY)
       token.style.left = `${xInWorld}px`
       token.style.top = `${yInWorld}px`
       token.style.cursor = "default"
