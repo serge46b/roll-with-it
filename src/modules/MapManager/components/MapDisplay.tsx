@@ -76,6 +76,7 @@ export default function MapDisplay({
   gridSize: number
   children?: React.ReactNode
 }) {
+  // TODO: Add context that provides resize and grid opacity settinhgs and handlers
   const worldRef = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)
   const [isImageLoading, setIsImageLoading] = useState(true)
@@ -146,7 +147,14 @@ export default function MapDisplay({
         />
         {!isImageLoading && (
           <>
-            <div className="absolute top-0 left-0 h-full w-full bg-red-500/10" />
+            <div
+              className="absolute top-0 left-0 h-full w-full opacity-15"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, #e0e0e0 5%, transparent 5%), linear-gradient(to bottom, #e0e0e0 5%, transparent 5%)",
+                backgroundSize: `${gridSize}px ${gridSize}px`,
+              }}
+            />
             <WorldTransformContext value={worldTransformContext}>{children}</WorldTransformContext>
           </>
         )}
