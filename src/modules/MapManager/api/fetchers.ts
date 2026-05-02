@@ -27,3 +27,12 @@ export async function fetchMapImage(worldUUID: string, mapId: number) {
   // return { mapImageURL, imageWidth, imageHeight }
   return { mapImageURL: mapImageURL?.signedUrl, imageWidth: 2000, imageHeight: 2000 }
 }
+
+export async function fetchTokenData(tokenId: number) {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from("character").select("*").eq("id", tokenId)
+  if (error) {
+    throw new Error(error.message)
+  }
+  return data
+}
