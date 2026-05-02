@@ -140,7 +140,7 @@ export default function MapDisplay({
           draggable={false}
           className={twclsx("pointer-events-none top-0 left-0 object-contain", isImageLoading ? "invisible" : "")}
           onDragStart={(e) => e.preventDefault()}
-          onLoadingComplete={() => {
+          onLoad={() => {
             setIsImageLoading(false)
           }}
           unoptimized
