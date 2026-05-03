@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "@/shared/supabase/server"
+import { Character } from "@/shared/types/dbSchema"
 
 export async function fetchMapImage(worldUUID: string, mapId: number) {
   const supabase = await createClient()
@@ -23,14 +24,19 @@ export async function fetchMapImage(worldUUID: string, mapId: number) {
   // }
   const { data: mapImageURL } = await supabase.storage
     .from("ImageStorage")
-    .createSignedUrl(`maps/${worldUUID}/${mapId}.jpg`, 3600)
+    .createSignedUrl(`maps/${worldUUID}/${mapId}`, 60)
   // return { mapImageURL, imageWidth, imageHeight }
   return { mapImageURL: mapImageURL?.signedUrl, imageWidth: 2000, imageHeight: 2000 }
 }
 
 export async function fetchTokenData(tokenId: number) {
   const supabase = await createClient()
-  const { data, error } = await supabase.from("character").select("*").eq("id", tokenId)
+  const { data, error } = await supabase
+    .from("character")
+    .select("*")
+    .eq("id", tokenId)
+    .single()
+    .overrideTypes<Character>()
   if (error) {
     throw new Error(error.message)
   }
