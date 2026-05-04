@@ -57,3 +57,7 @@ body {
       440px -160px;
   }
 }
+
+div {
+  outline: none;
+}
