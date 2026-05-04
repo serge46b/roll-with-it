@@ -5,4 +5,6 @@ export interface TokenData {
   currentHp: number
   color: string
   imageUrl?: string
+  pos_x: number
+  pos_y: number
 }

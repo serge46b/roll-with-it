@@ -1,8 +1,9 @@
 "use client"
 
 import { createClient } from "@/shared/supabase/client"
+import { Character } from "@/shared/types/dbSchema"
 
-export function subscribeToTokenChanges(tokenId: number, listener: (newX: number, newY: number) => void) {
+export function subscribeToTokenChanges(tokenId: number, listener: (newData: Character) => void) {
   const supabase = createClient()
   const channelName = `token_${tokenId}_coords`
   let cancelled = false
@@ -31,8 +32,8 @@ export function subscribeToTokenChanges(tokenId: number, listener: (newX: number
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "character", filter: `id=eq.${tokenId}` },
         (payload) => {
-          const newdata = payload.new as { pos_x: number; pos_y: number }
-          listener(newdata.pos_x, newdata.pos_y)
+          const newData = payload.new as Character
+          listener(newData)
         },
       )
       .subscribe()
