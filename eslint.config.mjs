@@ -60,6 +60,10 @@ const eslintConfig = defineConfig([
               },
             },
             {
+              from: { type: "shared" },
+              allow: { to: { type: "shared" } },
+            },
+            {
               from: { type: "components" },
               allow: { to: { type: "shared" } },
             },
