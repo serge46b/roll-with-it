@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
-import type { Profile } from "@/shared/types/dbSchema"
+import type { Tables } from "@/shared/supabase/dbSchema"
 
 export const fetchUserName = async (supabase: SupabaseClient) => {
   const {
@@ -12,7 +12,6 @@ export const fetchUserName = async (supabase: SupabaseClient) => {
     .select("nickname")
     .eq("user", user.id)
     .single()
-    .overrideTypes<Profile>()
   if (profileError) {
     throw new Error(profileError.message)
   }
