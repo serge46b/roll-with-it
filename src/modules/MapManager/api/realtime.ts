@@ -1,7 +1,9 @@
 "use client"
 
 import { createClient } from "@/shared/supabase/client"
-import { Character } from "@/shared/types/dbSchema"
+import { Tables } from "@/shared/supabase/dbSchema"
+
+type Character = Tables<"character">
 
 export function subscribeToTokenChanges(tokenId: number, listener: (newData: Character) => void) {
   const supabase = createClient()
