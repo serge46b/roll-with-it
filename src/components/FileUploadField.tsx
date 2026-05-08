@@ -8,7 +8,7 @@ export function FileUploadField({
   onFileSet,
   accept,
   disabled,
-  isInline = false,
+  inline = false,
   isError = false,
   placeholder = "Добавить файл",
 }: {
@@ -16,7 +16,7 @@ export function FileUploadField({
   onFileSet: (file: File | null) => void
   accept: string
   disabled?: boolean
-  isInline?: boolean
+  inline?: boolean
   isError?: boolean
   placeholder?: string
 }) {
@@ -100,7 +100,7 @@ export function FileUploadField({
         "border-border text-text-alt bg-text-alt/25 hover:text-text-main hover:bg-text-alt/35 flex w-full flex-col content-center items-center justify-center rounded-2xl border-4 border-dashed p-10 text-8xl transition-colors duration-300",
         {
           "text-text-alt/50 bg-text-alt/125 hover:text-text-alt/50 hover:bg-text-alt/125": disabled,
-          "flex-row gap-4 py-6 text-2xl": isInline,
+          "flex-row gap-4 py-6 text-2xl": inline,
           "bg-text-alt/35 text-text-main": isDragOver,
           "border-accent-warning bg-accent-warning-alt text-accent-warning hover:text-accent-warning/75 hover:bg-accent-warning-alt/75":
             isError,
@@ -203,7 +203,7 @@ export function FileUploadField({
       <p
         className={twclsx(
           "w-full overflow-hidden text-center text-2xl text-nowrap break-all text-ellipsis select-none",
-          { "w-auto": isInline },
+          { "w-auto": inline },
         )}
       >
         {!currentFile ? <>{placeholder}</> : <>{currentFile.name}</>}
