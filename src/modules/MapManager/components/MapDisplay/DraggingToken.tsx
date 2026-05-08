@@ -1,13 +1,21 @@
 "use client"
 
-import type { TokenData } from "../../types/TokenTypes"
 import { useContext, useEffect, useRef } from "react"
 import { WorldTransformContext } from "./WorldTransform"
 import { updateTokenPosition } from "../../api/updaters"
 import { Token } from "./Token"
+import { Tables } from "@/shared/supabase/dbSchema"
 
 // TODO: Add support for initial token position load
-export default function DraggingToken({ data, gridSize }: { data: TokenData; gridSize: number }) {
+export default function DraggingToken({
+  data,
+  gridSize,
+  imageUrl,
+}: {
+  data: Tables<"character">
+  gridSize: number
+  imageUrl?: string
+}) {
   const transformContext = useContext(WorldTransformContext)
   const { window2WorldTransform, alignToGrid, addEventListenerOnContainer, removeEventListenerOnContainer } =
     transformContext
@@ -52,5 +60,5 @@ export default function DraggingToken({ data, gridSize }: { data: TokenData; gri
     }
   }, [window2WorldTransform, alignToGrid, addEventListenerOnContainer, removeEventListenerOnContainer, data.id])
 
-  return <Token data={data} gridSize={gridSize} ref={tokenRef} />
+  return <Token data={data} imageUrl={imageUrl} gridSize={gridSize} ref={tokenRef} />
 }

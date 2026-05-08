@@ -1,12 +1,20 @@
 "use client"
 
-import type { TokenData } from "../../types/TokenTypes"
 import { useEffect, useState } from "react"
 import { subscribeToTokenChanges } from "../../api/realtime"
 import { Token } from "./Token"
+import { Tables } from "@/shared/supabase/dbSchema"
 
-export default function MovingToken({ data, gridSize }: { data: TokenData; gridSize: number }) {
-  const [currentData, setCurrentData] = useState<TokenData>(data)
+export default function MovingToken({
+  data,
+  gridSize,
+  imageUrl,
+}: {
+  data: Tables<"character">
+  gridSize: number
+  imageUrl?: string
+}) {
+  const [currentData, setCurrentData] = useState<Tables<"character">>(data)
 
   useEffect(() => {
     return subscribeToTokenChanges(data.id, (newData) => {
@@ -14,5 +22,5 @@ export default function MovingToken({ data, gridSize }: { data: TokenData; gridS
     })
   }, [data.id])
 
-  return <Token data={currentData} gridSize={gridSize} />
+  return <Token data={currentData} imageUrl={imageUrl} gridSize={gridSize} />
 }
