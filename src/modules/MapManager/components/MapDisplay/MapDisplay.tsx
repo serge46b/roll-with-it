@@ -68,12 +68,14 @@ export default function MapDisplay({
   imageWidth,
   imageHeight,
   gridSize,
+  mapName,
   children,
 }: {
   mapImage: string
   imageWidth: number
   imageHeight: number
   gridSize: number
+  mapName?: string
   children?: React.ReactNode
 }) {
   // TODO: Add context that provides resize and grid opacity settinhgs and handlers
@@ -120,7 +122,12 @@ export default function MapDisplay({
     world.style.scale = 1 - scaleX > 1 - scaleY ? `${scaleX * 0.9}` : `${scaleY * 0.9}`
   }, [imageWidth, imageHeight])
   return (
-    <div className="flex h-full w-full items-center justify-center overflow-hidden" ref={viewportRef}>
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden" ref={viewportRef}>
+      {mapName && (
+        <p className="absolute top-0 z-10 rounded-b-md bg-black/30 px-2 py-1 text-center text-xl text-white">
+          {mapName}
+        </p>
+      )}
       <div
         className="relative shrink-0 select-none"
         ref={worldRef}
