@@ -7,11 +7,13 @@ import { StyledModal } from "@/components/StyledModal"
 import MapDisplay from "../MapDisplay/MapDisplay"
 import { updateMapData, uploadMapImage } from "../../api/updaters"
 import { fetchMapData, fetchMapImage } from "../../api/fetchers"
+import { useRouter } from "next/navigation"
 
 const DEFAULT_GRID_SIZE = 10
 
 interface ExistingMap {
   mapId: number
+  mapName: string
   mapImageURL: string
   mapImageWidth: number
   mapImageHeight: number
@@ -31,7 +33,7 @@ const MapEditDialogHandler = Dialog.createHandle()
 
 export default function MapEditModalContextProvider({ children }: { children: React.ReactNode }) {
   const [isUploadPending, startUploadTransition] = useTransition()
-
+  const router = useRouter()
   const [worldUUID, setWorldUUID] = useState<string | null>(null)
   const [mapId, setMapId] = useState<number | null>(null)
   const [initialImage, setInitialImage] = useState<PreparedImage | null>(null)
@@ -61,16 +63,17 @@ export default function MapEditModalContextProvider({ children }: { children: Re
     }
     setExistingMap({
       mapId: mapData.id,
+      mapName: mapData.name,
       mapImageURL: mapImage.mapImageURL,
       mapImageWidth: mapImage.imageWidth,
       mapImageHeight: mapImage.imageHeight,
     })
     setGridSize(mapData.grid_scale_px)
-    if (inputRef.current) inputRef.current.value = mapData.name
     MapEditDialogHandler.open("context-trigger")
   }
   const closeModal = () => {
     MapEditDialogHandler.close()
+    router.refresh()
   }
   return (
     <>
@@ -100,7 +103,12 @@ export default function MapEditModalContextProvider({ children }: { children: Re
               onChange={(e) => setGridSize(Number(e.target.value))}
             />
           </div>
-          <input ref={inputRef} type="text" placeholder="Map Name" />
+          <input
+            ref={inputRef}
+            defaultValue={existingMap ? existingMap.mapName : ""}
+            type="text"
+            placeholder="Map Name"
+          />
           {error && <p className="text-red-500">{error}</p>}
           <div className="flex justify-between">
             <button disabled={isUploadPending} onClick={closeModal}>

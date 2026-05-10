@@ -5,31 +5,32 @@ import { MapEditModalContext } from "./MapEditModalContext"
 import { useContext, useTransition } from "react"
 import { WorldDataContext } from "@/shared/stores/WorldDataStore"
 import twclsx from "@/shared/utils/twClassMerge"
+import { Tables } from "@/shared/supabase/dbSchema"
 
-export default function MiniMapField({ mapImage, mapId }: { mapImage: MapImage; mapId: number }) {
+export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; map: Tables<"map"> }) {
   const { openModal } = useContext(MapEditModalContext)
   const { worldUUID } = useContext(WorldDataContext)
   const [isOpenModalPending, startOpenModalTransition] = useTransition()
-  if (!mapId) return <></>
+  if (!map) return <></>
   return (
     <div className="relative w-full">
       <button
         className={twclsx(
-          "absolute top-1 right-1 z-10 rounded-md bg-white/50 p-2 text-black",
+          "absolute top-1 right-1 rounded-md bg-white/50 p-2 text-black",
           isOpenModalPending && "animate-pulse",
         )}
         onClick={() => {
           startOpenModalTransition(async () => {
-            console.log(mapId)
-            await openModal(worldUUID, { id: mapId })
+            await openModal(worldUUID, { id: map.id })
           })
         }}
       >
         Edit Map
       </button>
+      <p className="absolute top-1 left-1 text-white">{map.name}</p>
       <Image
         src={mapImage.mapImageURL}
-        alt="Map"
+        alt={`Карта '${map.name}'`}
         width={mapImage.imageWidth}
         height={mapImage.imageHeight}
         sizes="20vw"
