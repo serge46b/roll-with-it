@@ -128,6 +128,11 @@ export default function MapDisplay({
           {mapName}
         </p>
       )}
+      {isImageLoading && (
+        <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/50">
+          <p className="animate-pulse text-white">Loading map...</p>
+        </div>
+      )}
       <div
         className="relative shrink-0 select-none"
         ref={worldRef}
