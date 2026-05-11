@@ -1,10 +1,11 @@
 "use client"
 
-import { useContext, useEffect, useRef } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { WorldTransformContext } from "./WorldTransform"
 import { updateTokenPosition } from "../../api/updaters"
 import { Token } from "./Token"
 import { Tables } from "@/shared/supabase/dbSchema"
+import { grid2world } from "../../helpers/CoordTransformers"
 
 // TODO: Add support for initial token position load
 export default function DraggingToken({
@@ -20,6 +21,7 @@ export default function DraggingToken({
   const { window2WorldTransform, alignToGrid, addEventListenerOnContainer, removeEventListenerOnContainer } =
     transformContext
   const tokenRef = useRef<HTMLButtonElement>(null)
+  const [localData, setLocalData] = useState<Tables<"character">>(data)
 
   useEffect(() => {
     if (!tokenRef.current) return
@@ -44,13 +46,15 @@ export default function DraggingToken({
     }
     const onMouseUp = (e: MouseEvent) => {
       e.preventDefault()
-      const { xInWorld, yInWorld } = alignToGrid(e.clientX - shiftX, e.clientY - shiftY)
-      token.style.left = `${xInWorld}px`
-      token.style.top = `${yInWorld}px`
+      const { xInGrid, yInGrid } = alignToGrid(e.clientX - shiftX, e.clientY - shiftY)
       token.style.cursor = "default"
-      updateTokenPosition(data.id, xInWorld, yInWorld)
+      const { xInWorld, yInWorld } = grid2world(xInGrid, yInGrid, gridSize)
+      token.style.left = `${xInWorld + (gridSize - parseInt(token.style.width)) / 2}px`
+      token.style.top = `${yInWorld + (gridSize - parseInt(token.style.height)) / 2}px`
+      updateTokenPosition(data.id, xInGrid, yInGrid)
       removeEventListenerOnContainer("mousemove", onmousemove)
       removeEventListenerOnContainer("mouseup", onMouseUp)
+      setLocalData((prev) => ({ ...prev, pos_x: xInGrid, pos_y: yInGrid }))
     }
     token.addEventListener("mousedown", onMouseDown)
     return () => {
@@ -58,7 +62,14 @@ export default function DraggingToken({
       removeEventListenerOnContainer("mousemove", onmousemove)
       removeEventListenerOnContainer("mouseup", onMouseUp)
     }
-  }, [window2WorldTransform, alignToGrid, addEventListenerOnContainer, removeEventListenerOnContainer, data.id])
+  }, [
+    window2WorldTransform,
+    alignToGrid,
+    addEventListenerOnContainer,
+    removeEventListenerOnContainer,
+    data.id,
+    gridSize,
+  ])
 
-  return <Token data={data} imageUrl={imageUrl} gridSize={gridSize} ref={tokenRef} />
+  return <Token data={localData} imageUrl={imageUrl} gridSize={gridSize} ref={tokenRef} />
 }
