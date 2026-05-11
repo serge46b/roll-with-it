@@ -2,8 +2,7 @@
 import twclsx from "@/shared/utils/twClassMerge"
 import Image from "next/image"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-// import { fetchMapImage } from "../api/fetchers"
-import { grid2world, mouseXY2WorldXY } from "../../helpers/CoordTransformers"
+import { mouseXY2WorldXY } from "../../helpers/CoordTransformers"
 import { WorldTransformContext, WorldTransformContextInterface } from "./WorldTransform"
 
 function genWheelHandler(world: HTMLDivElement) {
