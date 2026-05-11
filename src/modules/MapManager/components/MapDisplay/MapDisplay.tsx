@@ -3,7 +3,7 @@ import twclsx from "@/shared/utils/twClassMerge"
 import Image from "next/image"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 // import { fetchMapImage } from "../api/fetchers"
-import { mouseXY2WorldXY } from "../../helpers/CoordTransformers"
+import { grid2world, mouseXY2WorldXY } from "../../helpers/CoordTransformers"
 import { WorldTransformContext, WorldTransformContextInterface } from "./WorldTransform"
 
 function genWheelHandler(world: HTMLDivElement) {
@@ -28,7 +28,7 @@ function genPanHandlers(world: HTMLDivElement, viewport: HTMLDivElement) {
     const wRect = world.getBoundingClientRect()
     shiftX = e.clientX - wRect.x
     shiftY = e.clientY - wRect.y
-    world.style.cursor = "grabbing"
+    viewport.style.cursor = "grabbing"
     viewport.addEventListener("mousemove", onmousemove)
     viewport.addEventListener("mouseup", onMouseUp)
   }
@@ -44,7 +44,7 @@ function genPanHandlers(world: HTMLDivElement, viewport: HTMLDivElement) {
   const onMouseUp = (e: MouseEvent) => {
     if (!world || !viewport) return
     e.preventDefault()
-    world.style.cursor = "default"
+    viewport.style.cursor = "default"
     viewport.removeEventListener("mousemove", onmousemove)
     viewport.removeEventListener("mouseup", onMouseUp)
   }
@@ -58,8 +58,9 @@ function genWindow2WorldTransform(world: HTMLDivElement) {
 function genAlignToGrid(world: HTMLDivElement, gridSize: number) {
   return (x: number, y: number) => {
     const { xInWorld, yInWorld } = mouseXY2WorldXY(x, y, world)
-    // TODO: Write snap math
-    return { xInWorld, yInWorld }
+    const xInGrid = Math.round(xInWorld / gridSize)
+    const yInGrid = Math.round(yInWorld / gridSize)
+    return { xInGrid, yInGrid }
   }
 }
 
@@ -84,7 +85,7 @@ export default function MapDisplay({
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [worldTransformContext, setWorldTransformContext] = useState<WorldTransformContextInterface>({
     window2WorldTransform: () => ({ xInWorld: 0, yInWorld: 0 }),
-    alignToGrid: () => ({ xInWorld: 0, yInWorld: 0 }),
+    alignToGrid: () => ({ xInGrid: 0, yInGrid: 0 }),
     addEventListenerOnContainer: () => {},
     removeEventListenerOnContainer: () => {},
   })
@@ -145,7 +146,7 @@ export default function MapDisplay({
       >
         <Image
           src={mapImage}
-          alt="Map"
+          alt={`Map '${mapName}'`}
           width={imageWidth}
           height={imageHeight}
           draggable={false}
@@ -161,9 +162,12 @@ export default function MapDisplay({
             <div
               className="absolute top-0 left-0 h-full w-full opacity-15"
               style={{
-                backgroundImage: `linear-gradient(to right, #e0e0e0 5%, transparent 5%), linear-gradient(to bottom, #e0e0e0 5%, transparent 5%)`,
-                // backgroundImage: `linear-gradient(to right, #e0e0e0 ${imageWidth * 0.001}px, transparent ${imageWidth * 0.001}px), linear-gradient(to bottom, #e0e0e0 ${imageWidth * 0.001}px, transparent ${imageWidth * 0.001}px)`,
+                backgroundImage: `
+                  linear-gradient(to right, transparent 47.5%, #e0e0e0 47.5%, #e0e0e0 52.5%, transparent 52.5%),
+                  linear-gradient(to bottom, transparent 47.5%, #e0e0e0 47.5%, #e0e0e0 52.5%, transparent 52.5%)
+                `,
                 backgroundSize: `${gridSize}px ${gridSize}px`,
+                backgroundPosition: `${gridSize / 2}px ${gridSize / 2}px`,
               }}
             />
             <WorldTransformContext value={worldTransformContext}>{children}</WorldTransformContext>
