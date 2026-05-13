@@ -1,11 +1,11 @@
 "use client"
-import { createContext } from "react"
+import { createContext, useContext } from "react"
 
 interface WorldDataContextInterface {
   worldUUID: string
 }
 
-export const WorldDataContext = createContext<WorldDataContextInterface>({
+const WorldDataContext = createContext<WorldDataContextInterface>({
   worldUUID: "",
 })
 
@@ -17,4 +17,12 @@ export default function WorldDataContextProvider({
   worldUUID: string
 }) {
   return <WorldDataContext.Provider value={{ worldUUID }}>{children}</WorldDataContext.Provider>
+}
+
+export function useWorldData() {
+  const { worldUUID } = useContext(WorldDataContext)
+  if (!worldUUID) {
+    throw new Error("useWorldData should be called within WorldDataContextProvider")
+  }
+  return worldUUID
 }
