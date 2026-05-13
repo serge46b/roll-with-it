@@ -1,5 +1,5 @@
 // "use client"
-import { DraggingToken, MapDisplay, MapEditModal } from "@/modules/MapManager"
+import { DraggingToken, MapDisplay } from "@/modules/MapManager"
 // import { fetchTokenData } from "@/modules/MapManager/api/fetchers"
 import { MovingToken } from "@/modules/MapManager"
 import { createClient } from "@/shared/supabase/server"
