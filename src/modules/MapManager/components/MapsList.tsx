@@ -9,7 +9,7 @@ export default async function MapsList({ worldUUID }: { worldUUID: string }) {
       {maps.map((map) => (
         <MiniMapField key={map.map.id} mapImage={map.mapImage} map={map.map} />
       ))}
-      <AddMapField key={maps.length} worldUUID={worldUUID} />
+      <AddMapField key={maps.length} />
     </div>
   )
 }

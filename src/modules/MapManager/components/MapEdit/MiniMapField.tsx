@@ -3,13 +3,11 @@ import { MapImage } from "../../types/MapTypes"
 import Image from "next/image"
 import { MapEditModalContext } from "./MapEditModalContext"
 import { useContext, useTransition } from "react"
-import { WorldDataContext } from "@/shared/stores/WorldDataStore"
 import twclsx from "@/shared/utils/twClassMerge"
 import { Tables } from "@/shared/supabase/dbSchema"
 
 export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; map: Tables<"map"> }) {
   const { openModal } = useContext(MapEditModalContext)
-  const { worldUUID } = useContext(WorldDataContext)
   const [isOpenModalPending, startOpenModalTransition] = useTransition()
   if (!map) return <></>
   return (
@@ -21,7 +19,7 @@ export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; ma
         )}
         onClick={() => {
           startOpenModalTransition(async () => {
-            await openModal(worldUUID, { id: map.id })
+            await openModal({ id: map.id })
           })
         }}
       >

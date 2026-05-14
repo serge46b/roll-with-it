@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useRef, useState, useTransition } from "react"
+import { createContext, useRef, useState, useTransition, useContext } from "react"
 import { PreparedImage } from "../../helpers/PrepareImage"
 import { Dialog } from "@base-ui/react/dialog"
 import { StyledModal } from "@/components/StyledModal"
@@ -8,6 +8,7 @@ import MapDisplay from "../MapDisplay/MapDisplay"
 import { updateMapData, uploadMapImage } from "../../api/updaters"
 import { fetchMapData, fetchMapImage } from "../../api/fetchers"
 import { useRouter } from "next/navigation"
+import { useWorldData } from "@/shared/stores/WorldDataStore"
 
 const DEFAULT_GRID_SIZE = 10
 
@@ -20,7 +21,7 @@ interface ExistingMap {
 }
 
 interface MapEditModalContextInterface {
-  openModal: (worldUUID: string, map: { id?: number; image?: PreparedImage }) => Promise<void>
+  openModal: (map: { id?: number; image?: PreparedImage }) => Promise<void>
   closeModal: () => void
 }
 
@@ -33,8 +34,11 @@ const MapEditDialogHandler = Dialog.createHandle()
 
 export default function MapEditModalContextProvider({ children }: { children: React.ReactNode }) {
   const [isUploadPending, startUploadTransition] = useTransition()
+  const worldUUID = useWorldData()
+  if (!worldUUID) {
+    throw new Error("MapEditModalContextProvider should be wrapped in WorldDataContextProvider")
+  }
   const router = useRouter()
-  const [worldUUID, setWorldUUID] = useState<string | null>(null)
   const [mapId, setMapId] = useState<number | null>(null)
   const [initialImage, setInitialImage] = useState<PreparedImage | null>(null)
   const [existingMap, setExistingMap] = useState<ExistingMap | null>(null)
@@ -44,12 +48,11 @@ export default function MapEditModalContextProvider({ children }: { children: Re
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const openModal = async (worldUUID: string, map: { id?: number; image?: PreparedImage }) => {
+  const openModal = async (map: { id?: number; image?: PreparedImage }) => {
     setInitialImage(null)
     setExistingMap(null)
     setError(null)
     setGridSize(DEFAULT_GRID_SIZE)
-    setWorldUUID(worldUUID)
     setMapId(map.id ?? null)
     if (!map.id) {
       setInitialImage(map.image ?? null)
