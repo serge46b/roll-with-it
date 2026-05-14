@@ -4,7 +4,7 @@ import { MapEditModalContext } from "./MapEditModalContext"
 import { useContext, useTransition } from "react"
 import { prepareImage } from "../../helpers/PrepareImage"
 
-export default function AddMapField({ worldUUID }: { worldUUID: string }) {
+export default function AddMapField() {
   const { openModal } = useContext(MapEditModalContext)
   const [isFilePending, startFilePendingTransition] = useTransition()
   return (
@@ -15,7 +15,7 @@ export default function AddMapField({ worldUUID }: { worldUUID: string }) {
           if (!file) return
           startFilePendingTransition(async () => {
             const preparedImage = await prepareImage(file)
-            openModal(worldUUID, { image: preparedImage })
+            await openModal({ image: preparedImage })
           })
         }}
         accept="image/*"
