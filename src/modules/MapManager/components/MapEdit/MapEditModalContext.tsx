@@ -11,6 +11,13 @@ import { useRouter } from "next/navigation"
 import { useWorldData } from "@/shared/stores/WorldDataStore"
 
 const DEFAULT_GRID_SIZE = 10
+const PANEL_INPUT_CLASS =
+  "h-11 w-full rounded-md border border-white/80 bg-[#1b1b1b]/40 px-4 py-2 text-base font-light tracking-wide text-white placeholder:text-white/50 outline-none transition-colors focus:border-white"
+const PANEL_LABEL_CLASS = "text-xs font-light tracking-wide text-white/80 uppercase"
+const PANEL_BUTTON_CLASS =
+  "h-11 min-w-36 rounded-md border border-white/70 bg-[#1b1b1b]/40 px-6 text-sm font-light tracking-[0.12em] text-white uppercase transition-colors hover:border-white hover:bg-[#1b1b1b]/60 disabled:cursor-not-allowed disabled:opacity-60"
+const RANGE_CLASS =
+  "h-2 w-full cursor-pointer appearance-none rounded-full bg-white/15 accent-[#8b5cf6] [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-white/60 [&::-webkit-slider-thumb]:bg-[#8b5cf6] [&::-webkit-slider-thumb]:shadow-[0_0_0_2px_rgba(0,0,0,0.35)] [&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-white/15 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-white/60 [&::-moz-range-thumb]:bg-[#8b5cf6]"
 
 interface ExistingMap {
   mapId: number
@@ -82,10 +89,9 @@ export default function MapEditModalContextProvider({ children }: { children: Re
     <>
       <MapEditModalContext.Provider value={{ openModal, closeModal }}>{children}</MapEditModalContext.Provider>
       <StyledModal handle={MapEditDialogHandler}>
-        <div className="flex flex-col gap-4 p-8">
-          <Dialog.Title>Map Edit</Dialog.Title>
+        <div className="w-[min(92vw,42rem)] bg-[#1b1b1b]/15 p-6 backdrop-blur-[4px] sm:p-8">
           {initialImage || existingMap ? (
-            <div className="h-[50vh] w-[70vw] border border-white">
+            <div className="relative h-[clamp(13rem,32vh,20rem)] w-full overflow-hidden rounded-md border border-white/60 bg-black/30">
               <MapDisplay
                 mapImage={existingMap ? existingMap.mapImageURL : (initialImage!.image.src ?? "")}
                 imageWidth={existingMap ? existingMap.mapImageWidth : initialImage!.width}
@@ -94,30 +100,39 @@ export default function MapEditModalContextProvider({ children }: { children: Re
               />
             </div>
           ) : (
-            <p>Error while loading image</p>
+            <p className="text-sm text-red-300">Error while loading image</p>
           )}
-          <div className="flex flex-col gap-4">
-            <p>Grid Size: {gridSize}</p>
+          <div className="mt-4 flex flex-col gap-2">
+            <p className={PANEL_LABEL_CLASS}>Grid Size: {gridSize}</p>
             <input
               type="range"
               min={10}
               max={100}
               value={gridSize}
               onChange={(e) => setGridSize(Number(e.target.value))}
+              className={RANGE_CLASS}
             />
           </div>
-          <input
-            ref={inputRef}
-            defaultValue={existingMap ? existingMap.mapName : ""}
-            type="text"
-            placeholder="Map Name"
-          />
-          {error && <p className="text-red-500">{error}</p>}
-          <div className="flex justify-between">
-            <button disabled={isUploadPending} onClick={closeModal}>
+          <div className="mt-4 flex flex-col gap-1">
+            <label className={PANEL_LABEL_CLASS} htmlFor="map-name-input">
+              Map Name
+            </label>
+            <input
+              id="map-name-input"
+              ref={inputRef}
+              defaultValue={existingMap ? existingMap.mapName : ""}
+              type="text"
+              placeholder="Карта без названия"
+              className={PANEL_INPUT_CLASS}
+            />
+          </div>
+          {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
+          <div className="mt-6 flex items-center justify-between gap-3">
+            <button className={PANEL_BUTTON_CLASS} disabled={isUploadPending} onClick={closeModal}>
               Cancel
             </button>
             <button
+              className={PANEL_BUTTON_CLASS}
               disabled={isUploadPending}
               onClick={() => {
                 setError(null)
