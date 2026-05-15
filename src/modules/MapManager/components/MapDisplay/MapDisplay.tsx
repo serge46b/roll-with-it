@@ -124,9 +124,11 @@ export default function MapDisplay({
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden" ref={viewportRef}>
       {mapName && (
-        <p className="absolute top-0 z-10 rounded-b-md bg-black/30 px-2 py-1 text-center text-xl text-white">
-          {mapName}
-        </p>
+        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 px-4">
+          <p className="rounded-md border border-white/20 bg-[#1b1b1b]/25 px-2 py-1.5 text-center text-medium font-light tracking-wide text-white backdrop-blur-[5px]">
+            {mapName}
+          </p>
+        </div>
       )}
       {isImageLoading && (
         <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/50">
