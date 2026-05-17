@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useState } from "react"
-import { ActionPanelFrame as Frame } from "@/components/Frame"
+// import { ActionPanelFrame as Frame } from "@/components/Frame"
 
 export type ActionPanelMode = "choose" | "create" | "connect"
 
@@ -30,18 +30,9 @@ function ActionPanelFrameDecor({ className = "" }: { className?: string }) {
   )
 }
 
-function ActionPanel({
-  text,
-  onClick,
-}: {
-  text: string
-  onClick?: () => void
-}) {
+function ActionPanel({ text, onClick }: { text: string; onClick?: () => void }) {
   return (
-    <div
-      className={`relative h-[468px] w-[368px] shrink-0 ${onClick ? "cursor-pointer" : ""}`}
-      onClick={onClick}
-    >
+    <div className={`relative h-[468px] w-[368px] shrink-0 ${onClick ? "cursor-pointer" : ""}`} onClick={onClick}>
       <div className="flex h-full w-full items-center justify-center border-2 border-white bg-[#1b1b1b]/20 px-[16px] py-[16px] backdrop-blur-[5px]">
         <p className="text-center text-4xl font-light tracking-wide text-white">{text}</p>
       </div>
@@ -60,9 +51,7 @@ function WideActionPanel({ mode }: { mode: "create" | "connect" }) {
   return (
     <div className="relative h-[468px] w-[760px] shrink-0">
       <div className="flex h-full w-full flex-col border-2 border-white bg-[#1b1b1b]/20 px-[16px] py-[24px] backdrop-blur-[5px]">
-        <p className="shrink-0 pt-[20px] text-center text-4xl font-light tracking-wide text-white">
-          {title}
-        </p>
+        <p className="shrink-0 pt-[20px] text-center text-4xl font-light tracking-wide text-white">{title}</p>
         <div className="mt-8 flex flex-1 flex-col items-center justify-center gap-6">
           {mode === "create" ? (
             <>
@@ -93,11 +82,7 @@ function WideActionPanel({ mode }: { mode: "create" | "connect" }) {
                 placeholder="Введите ссылку"
                 className={`${PANEL_INPUT_CLASS} w-full max-w-[560px]`}
               />
-              <button
-                type="button"
-                className="cursor-pointer"
-                onClick={() => console.log("Подключиться к миру")}
-              >
+              <button type="button" className="cursor-pointer" onClick={() => console.log("Подключиться к миру")}>
                 <Image src="/svgs/check.svg" alt="Check" width={40} height={40} />
               </button>
             </>
@@ -106,10 +91,10 @@ function WideActionPanel({ mode }: { mode: "create" | "connect" }) {
       </div>
       <div className="pointer-events-none absolute top-1/2 left-1/2 z-10 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2">
         <div className="absolute top-0 left-0 h-[500px] w-[200px] overflow-hidden">
-          <Frame className="left-0 top-0" width={400} height={500} />
+          {/* <Frame className="left-0 top-0" width={400} height={500} /> */}
         </div>
         <div className="absolute top-0 right-0 h-[500px] w-[200px] overflow-hidden">
-          <Frame className="right-0 top-0" width={400} height={500} />
+          {/* <Frame className="right-0 top-0" width={400} height={500} /> */}
         </div>
         <div className="absolute top-0 right-[200px] left-[200px] h-[4px] bg-white" />
         <div className="absolute right-[200px] bottom-0 left-[200px] h-[4px] bg-white" />
