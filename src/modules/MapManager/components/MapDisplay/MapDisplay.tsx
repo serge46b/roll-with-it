@@ -19,14 +19,13 @@ function genWheelHandler(world: HTMLDivElement) {
 
 function genPanHandlers(world: HTMLDivElement, viewport: HTMLDivElement) {
   // FIXME: Fix math here
-  let shiftX = 9
-  let shiftY = 0
+  let prevX = 0
+  let prevY = 0
   const onMouseDown = (e: MouseEvent) => {
     if (!world || !viewport || e.button !== 1) return
     e.preventDefault()
-    const wRect = world.getBoundingClientRect()
-    shiftX = e.clientX - wRect.x
-    shiftY = e.clientY - wRect.y
+    prevX = e.clientX
+    prevY = e.clientY
     viewport.style.cursor = "grabbing"
     viewport.addEventListener("mousemove", onmousemove)
     viewport.addEventListener("mouseup", onMouseUp)
@@ -34,9 +33,13 @@ function genPanHandlers(world: HTMLDivElement, viewport: HTMLDivElement) {
   const onmousemove = (e: MouseEvent) => {
     if (!world || !viewport) return
     e.preventDefault()
-    const newX = e.clientX - shiftX
-    const newY = e.clientY - shiftY
-    console.log(shiftX, shiftY)
+    const scale = Number(world.style.scale) || 1
+    const oldX = parseFloat(world.style.left) || 0
+    const oldY = parseFloat(world.style.top) || 0
+    const newX = oldX + (e.clientX - prevX)
+    const newY = oldY + (e.clientY - prevY)
+    prevX = e.clientX
+    prevY = e.clientY
     world.style.left = `${newX}px`
     world.style.top = `${newY}px`
   }
@@ -124,11 +127,9 @@ export default function MapDisplay({
   return (
     <div className="relative flex h-full w-full items-center justify-center overflow-hidden" ref={viewportRef}>
       {mapName && (
-        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 px-4">
-          <p className="rounded-md border border-white/20 bg-[#1b1b1b]/25 px-2 py-1.5 text-center text-medium font-light tracking-wide text-white backdrop-blur-[5px]">
-            {mapName}
-          </p>
-        </div>
+        <p className="absolute top-0 z-10 rounded-b-md bg-black/30 px-2 py-1 text-center text-xl text-white">
+          {mapName}
+        </p>
       )}
       {isImageLoading && (
         <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/50">
