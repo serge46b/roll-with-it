@@ -29,7 +29,7 @@ export function CharacterHpSection({
         </div>
       ) : null}
       <div className="flex items-center gap-[0.5em]">
-        <p className="w-[4.5em] shrink-0 text-center text-[0.85em]">
+        <p className="w-[4.5em] shrink-0 text-center text-[1.1em]">
           {hp}/{maxHp}
         </p>
         <HpBar maxHp={maxHp} currentHp={hp} className="flex-1" />

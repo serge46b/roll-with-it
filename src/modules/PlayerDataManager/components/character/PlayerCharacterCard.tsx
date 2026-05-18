@@ -28,7 +28,8 @@ interface PlayerCharacterCardProps {
 function StatPill({ label, value }: { label: string; value: string }) {
   return (
     <PrestyledTooltip label={label}>
-      <Tooltip.Trigger delay={150} className={CARD_PILL_CLASS}>
+      <Tooltip.Trigger delay={150} className={twclsx("flex w-full gap-[0.5em]", CARD_PILL_CLASS)}>
+        <span>{label}</span>
         <span className={CARD_PILL_TEXT_CLASS}>{value}</span>
       </Tooltip.Trigger>
     </PrestyledTooltip>
@@ -41,54 +42,41 @@ export function PlayerCharacterCard({ data, className }: PlayerCharacterCardProp
   return (
     <article
       className={twclsx(
-        "relative w-full rounded-[0.5em] border border-white/20 text-[length:1em] text-white",
+        "relative w-full rounded-[0.5em] border border-white/20 text-[1em] text-white",
         CARD_SURFACE,
         className,
       )}
       style={{ backgroundColor: `${data.accentColor}33` }}
     >
-      <div className={twclsx("flex gap-[0.75em]", CARD_HEADER_PADDING)}>
-        {data.imageUrl ? (
-          <Image
-            src={data.imageUrl}
-            alt={data.name}
-            width={56}
-            height={56}
-            className="h-[3.5em] w-[3.5em] shrink-0 rounded-full border-2 object-cover"
-            style={{ borderColor: data.accentColor }}
-            unoptimized
-          />
-        ) : (
-          <div
-            className="h-[3.5em] w-[3.5em] shrink-0 rounded-full border-2 bg-white/15"
-            style={{ borderColor: data.accentColor }}
-          />
-        )}
-
-        <div className="flex min-w-0 flex-1 flex-col gap-[0.45em]">
+      <div className={twclsx("flex flex-col gap-[0.75em]", CARD_HEADER_PADDING)}>
+        <div className="flex gap-[0.75em]">
+          {data.imageUrl ? (
+            <Image
+              src={data.imageUrl}
+              alt={data.name}
+              width={56}
+              height={56}
+              className="h-[3.5em] w-[3.5em] shrink-0 rounded-full border-2 object-cover"
+              style={{ borderColor: data.accentColor }}
+              unoptimized
+            />
+          ) : (
+            <div
+              className="h-[3.5em] w-[3.5em] shrink-0 rounded-full border-2 bg-white/15"
+              style={{ borderColor: data.accentColor }}
+            />
+          )}
           <div>
             <h3 className="truncate text-[1em] font-medium">{data.name}</h3>
             <p className="text-[0.8em] text-white/70">
               {data.class || "—"} · {data.race || "—"} · ур. {data.level}
             </p>
           </div>
+        </div>
 
-          <CharacterHpSection
-            characterId={data.id}
-            currentHp={data.currentHp}
-            maxHp={data.maxHp}
-            canEditHp={data.canEditHp}
-          />
-
-          <div className={twclsx("flex flex-wrap items-center", CARD_WEAPON_STATS_GAP, CARD_ROW_TEXT)}>
-            <StatPill label="Класс защиты" value={String(data.defenseClass)} />
-            <StatPill label="Скорость" value={String(data.speed)} />
-            <StatPill label="Бонус HP" value={data.hpBonus >= 0 ? `+${data.hpBonus}` : String(data.hpBonus)} />
-            {data.alignment ? <StatPill label="Мировоззение" value={data.alignment} /> : null}
-          </div>
-
+        <div className="flex min-w-0 flex-1 flex-col gap-[0.45em]">
           {data.characteristics.length > 0 ? (
-            <div className={twclsx("flex flex-wrap items-center", CARD_WEAPON_STATS_GAP, CARD_ROW_TEXT)}>
+            <div className={twclsx("grid grid-cols-2 items-center", CARD_WEAPON_STATS_GAP, CARD_ROW_TEXT)}>
               {data.characteristics.map((characteristic) => (
                 <StatPill
                   key={characteristic.id}
@@ -98,6 +86,13 @@ export function PlayerCharacterCard({ data, className }: PlayerCharacterCardProp
               ))}
             </div>
           ) : null}
+
+          <CharacterHpSection
+            characterId={data.id}
+            currentHp={data.currentHp}
+            maxHp={data.maxHp}
+            canEditHp={data.canEditHp}
+          />
         </div>
       </div>
 

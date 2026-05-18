@@ -8,7 +8,7 @@ export const CARD_ROW_TEXT = "text-[0.95em]"
 export const CARD_DESC_TEXT = "text-[0.85em] leading-relaxed text-white/85"
 
 export const CARD_PILL_CLASS =
-  "inline-flex min-h-[1.85em] min-w-0 max-w-[8em] items-center justify-center rounded-full border border-white/25 bg-black/40 px-[0.65em] py-[0.2em] text-[length:1em]"
+  "inline-flex min-h-[1.85em] min-w-0 items-center justify-center rounded-xl border border-white/25 bg-black/40 px-[0.65em] py-[0.2em] text-[length:1em]"
 
 export const CARD_PILL_TEXT_CLASS = "min-w-0 truncate text-center leading-none"
 
