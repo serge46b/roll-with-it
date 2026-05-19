@@ -17,7 +17,7 @@ export function StyledModal({ children, handle }: { children: ReactNode; handle?
   )
 }
 
-function Frame({ children }: { children: ReactNode }) {
+export function Frame({ children }: { children: ReactNode }) {
   return (
     <div className="relative h-fit">
       <div className="m-3 h-fit max-h-[80vh] min-h-30 w-fit max-w-[80vw] min-w-30 overflow-auto border border-neutral-400">
