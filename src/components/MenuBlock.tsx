@@ -48,7 +48,9 @@ export function MenuBlock({
         </button>
         <div
           className={twclsx(
-            "flex h-full min-h-0 w-full flex-1 items-center justify-start overflow-hidden px-[2.5%] pb-3",
+            "h-[calc(100%-2.8rem)] min-h-0 w-full px-[2.5%] pb-3",
+            { "overflow-y-auto": stickSide === Side.BOTTOM || stickSide === Side.TOP },
+            { "overflow-x-auto": stickSide === Side.RIGHT || stickSide === Side.LEFT },
           )}
         >
           {children}
