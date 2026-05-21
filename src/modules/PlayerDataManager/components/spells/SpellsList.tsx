@@ -3,6 +3,9 @@ import AddSpellField from "./AddSpellField"
 import { SpellLevelList } from "./SpellLevelList"
 
 export default async function SpellsList({ characterId }: { characterId: number }) {
+  if (characterId === -1) {
+    return <p>Создайте персонажа</p>
+  }
   const [spellsByLevel, slotsByLevel] = await Promise.all([
     fetchSpellsByCharacter(characterId),
     fetchSpellLevelSlotsByCharacter(characterId),

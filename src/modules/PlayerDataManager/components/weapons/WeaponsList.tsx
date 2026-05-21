@@ -3,6 +3,9 @@ import AddWeaponField from "./AddWeaponField"
 import { WeaponCard, WeaponListHeader } from "./WeaponCard"
 
 export default async function WeaponsList({ characterId }: { characterId: number }) {
+  if (characterId === -1) {
+    return <p>Создайте персонажа</p>
+  }
   const weapons = await fetchWeaponsByCharacter(characterId)
 
   return (
