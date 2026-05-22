@@ -2,7 +2,7 @@
 
 import { createContext, useRef, useState, useTransition, useContext } from "react"
 import { Dialog } from "@base-ui/react/dialog"
-import { StyledModal } from "@/components/StyledModal"
+import { Frame, StyledModal } from "@/components/StyledModal"
 import { useRouter } from "next/navigation"
 import { createWorld } from "../api/updaters"
 
@@ -25,6 +25,8 @@ export default function WorldAddModalContextProvider({ children }: { children: R
   const [modalMode, setModalMode] = useState<"create" | "connect" | null>(null)
   const router = useRouter()
   const openModal = async (planetIndex: number) => {
+    setModalMode(null)
+    setError(null)
     setPlanetIndex(planetIndex)
     WorldAddDialogHandler.open("context-trigger")
   }
@@ -111,9 +113,9 @@ function CreateWorldModalContent({
   const wroldDescriptionTextareaRef = useRef<HTMLTextAreaElement>(null)
   return (
     <>
-      <Dialog.Title>Создать мир</Dialog.Title>
+      <Dialog.Title className="text-center">Создать мир</Dialog.Title>
       <input type="text" placeholder="Название мира" ref={wroldNameInputRef} />
-      <textarea placeholder="Описание миra" ref={wroldDescriptionTextareaRef} />
+      <textarea placeholder="Описание мирa" ref={wroldDescriptionTextareaRef} />
       <button
         disabled={isPending}
         onClick={() =>
@@ -136,7 +138,7 @@ function ConnectWorldModalContent({
   const worldLinkInputRef = useRef<HTMLInputElement>(null)
   return (
     <>
-      <Dialog.Title>Подключиться к миру</Dialog.Title>
+      <Dialog.Title className="text-center">Подключиться к миру</Dialog.Title>
       <input type="text" placeholder="UUID мира" ref={worldLinkInputRef} />
       <button disabled={isPending} onClick={() => onConnect(worldLinkInputRef.current?.value ?? "")}>
         {isPending ? "Подключение..." : "Подключиться"}
@@ -147,10 +149,17 @@ function ConnectWorldModalContent({
 
 function ChooseWorldAddModalContent({ onChoose }: { onChoose: (mode: "create" | "connect") => void }) {
   return (
-    <>
-      <Dialog.Title>Выберите действие</Dialog.Title>
-      <button onClick={() => onChoose("create")}>Создать мир</button>
-      <button onClick={() => onChoose("connect")}>Подключиться к миру</button>
-    </>
+    <div className="flex w-full gap-4">
+      <div className="flex w-1/2 items-center justify-center border border-white">
+        <button className="h-full w-full p-6 outline-none" onClick={() => onChoose("create")}>
+          Создать мир
+        </button>
+      </div>
+      <div className="flex w-1/2 items-center justify-center border border-white">
+        <button className="h-full w-full p-6 outline-none" onClick={() => onChoose("connect")}>
+          Подключиться к миру
+        </button>
+      </div>
+    </div>
   )
 }

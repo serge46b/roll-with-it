@@ -7,7 +7,9 @@ import { Tables } from "@/shared/supabase/dbSchema"
 import { createClient } from "@/shared/supabase/server"
 import { Side } from "@/shared/types/SideEnum"
 import { User } from "@supabase/supabase-js"
+import Image from "next/image"
 import {
+  CharacterCreateModalProvider,
   CharacterPanel,
   fetchPlayerCharacterByWorld,
   GmNotesList,
@@ -15,6 +17,10 @@ import {
   SpellsList,
   WeaponsList,
 } from "@/modules/PlayerDataManager"
+import { DiceContent, RollDiceModalContextProvider } from "@/modules/Dice"
+import WorldDataContextProvider from "@/shared/stores/WorldDataStore"
+import PlayerDataModalContextProvider from "@/modules/PlayerDataManager/components/PlayerDataModalContext"
+import CharacterDataContextProvider from "@/shared/stores/CharacterDataStore"
 
 export default async function WorldPage({
   params,
@@ -52,13 +58,15 @@ export default async function WorldPage({
     if (!mapsIds) {
       return <p className="text-red-500">Maps not found</p>
     }
-    mapIdNumber = mapsIds[0].id
+    mapIdNumber = mapsIds.length > 0 ? mapsIds[0].id : null
   }
   const isUserOwner = world.owner === user.id
   return (
     <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden">
-      <WorldMap key={mapIdNumber} worldUUID={world.uuid} mapId={mapIdNumber} user={user} />
-      <BarMenu worldUUID={world.uuid} isOwner={isUserOwner} />
+      <WorldDataContextProvider worldUUID={world.uuid}>
+        {mapIdNumber && <WorldMap key={mapIdNumber} worldUUID={world.uuid} mapId={mapIdNumber} user={user} />}
+        <BarMenu worldUUID={world.uuid} isOwner={isUserOwner} />
+      </WorldDataContextProvider>
     </div>
   )
 }
@@ -115,30 +123,49 @@ async function BarMenu({ worldUUID, isOwner }: { worldUUID: string; isOwner: boo
   }
   return (
     <div className="absolute bottom-0 left-0 flex w-full items-end justify-evenly">
-      {/* TODO: Add dices */}
+      <div className="w-15">
+        <RollDiceModalContextProvider>
+          <MenuBlock
+            titleContent={<Image src="/svgs/d20.svg" alt="Dice" width={24} height={24} />}
+            stickSide={Side.BOTTOM}
+          >
+            <DiceContent />
+          </MenuBlock>
+        </RollDiceModalContextProvider>
+      </div>
       {isOwner ? (
-        <>
-          <MenuBlock titleContent="Карты" stickSide={Side.BOTTOM}>
-            <MapsList worldUUID={worldUUID} />
-          </MenuBlock>
-          <MenuBlock titleContent="Персонажи" stickSide={Side.BOTTOM}>
-            <NpcsList worldUUID={worldUUID} />
-          </MenuBlock>
-          <MenuBlock titleContent="Заметки" stickSide={Side.BOTTOM}>
-            <GmNotesList worldUUID={worldUUID} />
-          </MenuBlock>
-        </>
+        <CharacterDataContextProvider characterId={-1}>
+          <PlayerDataModalContextProvider>
+            <MenuBlock titleContent="Карты" stickSide={Side.BOTTOM}>
+              <MapsList worldUUID={worldUUID} />
+            </MenuBlock>
+            <MenuBlock titleContent="Персонажи" stickSide={Side.BOTTOM}>
+              <NpcsList worldUUID={worldUUID} />
+            </MenuBlock>
+            <MenuBlock titleContent="Заметки" stickSide={Side.BOTTOM}>
+              <GmNotesList worldUUID={worldUUID} />
+            </MenuBlock>
+          </PlayerDataModalContextProvider>
+        </CharacterDataContextProvider>
       ) : (
         <>
-          <MenuBlock titleContent="Персонаж" stickSide={Side.BOTTOM}>
-            <CharacterPanel worldUUID={worldUUID} />
-          </MenuBlock>
-          <MenuBlock titleContent="Предметы" stickSide={Side.BOTTOM}>
-            <WeaponsList characterId={character!.id} />
-          </MenuBlock>
-          <MenuBlock titleContent="Заклинания" stickSide={Side.BOTTOM}>
-            <SpellsList characterId={character!.id} />
-          </MenuBlock>
+          <CharacterCreateModalProvider>
+            <MenuBlock titleContent="Персонаж" stickSide={Side.BOTTOM}>
+              <CharacterPanel worldUUID={worldUUID} />
+            </MenuBlock>
+          </CharacterCreateModalProvider>
+          {character && (
+            <CharacterDataContextProvider characterId={character.id}>
+              <PlayerDataModalContextProvider>
+                <MenuBlock titleContent="Предметы" stickSide={Side.BOTTOM}>
+                  <WeaponsList characterId={character.id} />
+                </MenuBlock>
+                <MenuBlock titleContent="Заклинания" stickSide={Side.BOTTOM}>
+                  <SpellsList characterId={character.id} />
+                </MenuBlock>
+              </PlayerDataModalContextProvider>
+            </CharacterDataContextProvider>
+          )}
         </>
       )}
     </div>
