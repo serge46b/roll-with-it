@@ -62,7 +62,7 @@ export default async function WorldPage({
   }
   const isUserOwner = world.owner === user.id
   return (
-    <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden">
+    <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden bg-[#1E1E1E]">
       <WorldDataContextProvider worldUUID={world.uuid}>
         {mapIdNumber && <WorldMap key={mapIdNumber} worldUUID={world.uuid} mapId={mapIdNumber} user={user} />}
         <BarMenu worldUUID={world.uuid} isOwner={isUserOwner} />
