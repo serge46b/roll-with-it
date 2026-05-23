@@ -20,7 +20,7 @@ export function StyledModal({ children, handle }: { children: ReactNode; handle?
 export function Frame({ children }: { children: ReactNode }) {
   return (
     <div className="relative h-fit">
-      <div className="m-3 h-fit max-h-[80vh] min-h-30 w-fit max-w-[80vw] min-w-30 overflow-auto border border-neutral-400">
+      <div className="m-3 h-fit max-h-[80vh] min-h-30 w-fit max-w-[80vw] min-w-30 overflow-auto border border-neutral-400 backdrop-blur-md">
         {children}
       </div>
       <div className="absolute top-0 left-8 h-0 w-[calc(100%-4rem)] border-t-2 border-white"></div>
