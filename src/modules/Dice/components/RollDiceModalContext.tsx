@@ -34,12 +34,9 @@ export function RollDiceModalContextProvider({ children }: { children: React.Rea
       <RollDiceModalContext.Provider value={{ openModal, closeModal }}>{children}</RollDiceModalContext.Provider>
       <StyledModal handle={RollDiceDialogHandler}>
         <div className="flex flex-col gap-4 p-8">
-          <div className="flex h-[30vh] w-[40vw] flex-col items-center justify-center gap-5 border border-white text-xl">
-            <Image src={`/svgs/dice${diceSides}.svg`} alt={`d${diceSides}`} width={60} height={60} />
-            {`Результат броска d${diceSides}: ${diceValue}!`}
-          </div>
-          <div className="flex w-full justify-center">
-            <button onClick={closeModal}>Закрыть</button>
+          <div className="flex h-[30vh] w-[40vw] flex-col items-center justify-center gap-5 border border-white text-2xl">
+            <Image src={`/svgs/dice${diceSides}.svg`} alt={`d${diceSides}`} width={60} height={60}/>
+            {`Результат: ${diceValue}!`}
           </div>
         </div>
       </StyledModal>
