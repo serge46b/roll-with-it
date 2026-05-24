@@ -21,6 +21,8 @@ import { DiceContent, RollDiceModalContextProvider } from "@/modules/Dice"
 import WorldDataContextProvider from "@/shared/stores/WorldDataStore"
 import PlayerDataModalContextProvider from "@/modules/PlayerDataManager/components/PlayerDataModalContext"
 import CharacterDataContextProvider from "@/shared/stores/CharacterDataStore"
+import { redirect } from "next/navigation"
+import { Dialog } from "@base-ui/react"
 
 export default async function WorldPage({
   params,
@@ -38,6 +40,9 @@ export default async function WorldPage({
     error: userError,
   } = await supabase.auth.getUser()
   if (userError) {
+    if (userError.status === 401) {
+      redirect("/login")
+    }
     return <p className="text-red-500">Error: {userError.message}</p>
   }
   if (!user) {
@@ -62,7 +67,7 @@ export default async function WorldPage({
   }
   const isUserOwner = world.owner === user.id
   return (
-    <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden bg-[#1E1E1E]">
+    <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden">
       <WorldDataContextProvider worldUUID={world.uuid}>
         {mapIdNumber && <WorldMap key={mapIdNumber} worldUUID={world.uuid} mapId={mapIdNumber} user={user} />}
         <BarMenu worldUUID={world.uuid} isOwner={isUserOwner} />
@@ -145,6 +150,7 @@ async function BarMenu({ worldUUID, isOwner }: { worldUUID: string; isOwner: boo
             <MenuBlock titleContent="Заметки" stickSide={Side.BOTTOM}>
               <GmNotesList worldUUID={worldUUID} />
             </MenuBlock>
+            <ShareWorld worldUUID={worldUUID} />
           </PlayerDataModalContextProvider>
         </CharacterDataContextProvider>
       ) : (
@@ -169,5 +175,15 @@ async function BarMenu({ worldUUID, isOwner }: { worldUUID: string; isOwner: boo
         </>
       )}
     </div>
+  )
+}
+
+function ShareWorld({ worldUUID }: { worldUUID: string }) {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Image src="/svgs/link.svg" alt="Share" width={24} height={24} />
+      </Dialog.Trigger>
+    </Dialog.Root>
   )
 }
