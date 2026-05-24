@@ -151,8 +151,16 @@ export function mapCharacterRowToPlayerCard(
   }
 }
 
-export function formatCharacteristicValue(value: number): string {
-  return value >= 0 ? `+${value}` : String(value)
+export function getAbilityModifier(score: number): number {
+  return Math.floor((score - 10) / 2)
+}
+
+export function formatAbilityModifier(modifier: number): string {
+  return modifier >= 0 ? `+${modifier}` : String(modifier)
+}
+
+export function formatCharacteristicValue(score: number): string {
+  return formatAbilityModifier(getAbilityModifier(score))
 }
 
 export function formatAttackBonus(bonus: number): string {
