@@ -9,8 +9,7 @@ import {
   CARD_BODY_PADDING,
   CARD_DESC_TEXT,
   CARD_HEADER_PADDING,
-  CARD_PILL_CLASS,
-  CARD_PILL_TEXT_CLASS,
+  CHARACTER_STAT_PILL_CLASS,
   CARD_ROW_GAP,
   CARD_ROW_TEXT,
   CARD_SURFACE,
@@ -18,20 +17,28 @@ import {
 } from "../cardStyles"
 import { CharacterHpSection } from "../../charHp/CharacterHpSection"
 import type { PlayerCharacterCardData } from "../../types/PlayerDataTypes"
-import { formatCharacteristicValue } from "../../types/PlayerDataTypes"
+import {
+  formatAbilityModifier,
+  getAbilityModifier,
+} from "../../types/PlayerDataTypes"
 
 interface PlayerCharacterCardProps {
   data: PlayerCharacterCardData
   className?: string
 }
 
-function StatPill({ label, value }: { label: string; value: string }) {
+function StatPill({ label, score, modifier }: { label: string; score: number; modifier: string }) {
   return (
     <PrestyledTooltip label={label}>
-      <Tooltip.Trigger delay={150} className={twclsx("flex w-full gap-[0.5em]", CARD_PILL_CLASS)}>
-        <span>{label}</span>
-        <span className={CARD_PILL_TEXT_CLASS}>{value}</span>
-      </Tooltip.Trigger>
+      <div className="w-full min-w-0">
+        <Tooltip.Trigger delay={150} className={CHARACTER_STAT_PILL_CLASS}>
+          <span className="min-w-0 truncate text-left font-medium tracking-wide">{label}</span>
+          <span className="flex shrink-0 items-center gap-[0.35em] tabular-nums">
+            <span className="text-[1.05em] font-medium">{score}</span>
+            <span className="min-w-[2ch] text-right leading-none">{modifier}</span>
+          </span>
+        </Tooltip.Trigger>
+      </div>
     </PrestyledTooltip>
   )
 }
@@ -81,7 +88,8 @@ export function PlayerCharacterCard({ data, className }: PlayerCharacterCardProp
                 <StatPill
                   key={characteristic.id}
                   label={characteristic.name}
-                  value={formatCharacteristicValue(characteristic.value)}
+                  score={characteristic.value}
+                  modifier={formatAbilityModifier(getAbilityModifier(characteristic.value))}
                 />
               ))}
             </div>

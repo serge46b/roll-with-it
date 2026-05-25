@@ -8,9 +8,12 @@ export const CARD_ROW_TEXT = "text-[0.95em]"
 export const CARD_DESC_TEXT = "text-[0.85em] leading-relaxed text-white/85"
 
 export const CARD_PILL_CLASS =
-  "inline-flex min-h-[1.85em] min-w-0 items-center justify-center rounded-xl border border-white/25 bg-black/40 px-[0.65em] py-[0.2em] text-[length:1em]"
+  "inline-flex min-h-[1.85em] min-w-0 items-center justify-start rounded-xl border border-white/25 bg-black/40 px-[0.65em] py-[0.2em] text-[length:1em]"
 
 export const CARD_PILL_TEXT_CLASS = "min-w-0 truncate text-center leading-none"
+
+export const CHARACTER_STAT_PILL_CLASS =
+  "flex w-full min-w-0 items-center justify-between gap-[0.5em] rounded-xl border border-white/25 bg-black/40 px-[0.65em] py-[0.2em] text-[length:1em]"
 
 export const CARD_ROW_GAP = "gap-[0.5em]"
 export const CARD_WEAPON_STATS_GAP = "gap-[0.3em]"
