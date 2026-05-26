@@ -14,10 +14,13 @@ export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; ma
   const router = useRouter()
   if (!map) return <></>
   return (
-    <div className="relative w-full">
+    <article className="relative w-full overflow-hidden rounded-[0.5em] border border-white/25 bg-black/40 text-[length:1em] text-white">
+      <p className="relative z-10 truncate bg-black/75 px-[0.75em] py-[0.55em] text-[0.9em] font-medium tracking-wide text-white">
+        {map.name}
+      </p>
       <button
         className={twclsx(
-          "absolute top-1 right-1 rounded-md bg-white/50 p-2 text-black",
+          "absolute top-[0.5em] right-[0.25em] z-20 rounded-md border border-white/30 bg-black/60 px-[0.55em] py-[0.25em] text-[0.72em] font-medium text-white transition-colors hover:bg-black/75",
           isOpenModalPending && "animate-pulse",
         )}
         onClick={() => {
@@ -28,19 +31,19 @@ export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; ma
       >
         Edit Map
       </button>
-      <p className="absolute top-1 left-1 text-white">{map.name}</p>
-      <Image
-        src={mapImage.mapImageURL}
-        alt={`Карта '${map.name}'`}
-        width={mapImage.imageWidth}
-        height={mapImage.imageHeight}
-        sizes="20vw"
-        className="h-auto w-full object-contain"
-        unoptimized
-        onClick={() => {
-          router.push(`${pathname}?mapId=${map.id}`)
-        }}
-      />
-    </div>
+      <div className="relative aspect-[2/1] w-full bg-white/10">
+        <Image
+          src={mapImage.mapImageURL}
+          alt={`Карта '${map.name}'`}
+          fill
+          sizes="100vw"
+          className="object-cover"
+          unoptimized
+          onClick={() => {
+            router.push(`/world/${map.world}?mapId=${map.id}`)
+          }}
+        />
+      </div>
+    </article>
   )
 }
