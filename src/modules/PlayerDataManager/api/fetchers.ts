@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "@/shared/supabase/server"
+import { sortByKey } from "@/shared/utils/sortByKey"
 import { insertWithGeneratedId } from "./helpers"
 import {
   emptySlotsByLevel,
@@ -68,7 +69,7 @@ export async function fetchWeaponsByCharacter(characterId: number): Promise<Weap
     })
   }
 
-  return weapons
+  return sortByKey(weapons, "id")
 }
 
 export async function fetchWeaponByEquipmentItemId(equipmentItemId: number): Promise<WeaponCardData | null> {
@@ -133,6 +134,10 @@ export async function fetchSpellsByCharacter(characterId: number): Promise<Spell
         level,
       })
     }
+  }
+
+  for (const level of SPELL_LEVELS) {
+    grouped[level] = sortByKey(grouped[level], "id")
   }
 
   return grouped
@@ -227,7 +232,10 @@ export async function fetchGmNotesByWorld(worldUUID: string): Promise<GmNoteCard
     throw new Error(error.message)
   }
 
-  return (data ?? []).map((row) => ({ id: row.id, note: row.note }))
+  return sortByKey(
+    (data ?? []).map((row) => ({ id: row.id, note: row.note })),
+    "id",
+  )
 }
 
 export async function fetchGmNoteById(noteId: number): Promise<GmNoteCardData | null> {
@@ -252,12 +260,15 @@ export async function fetchCharacteristicsByCharacter(characterId: number): Prom
     throw new Error(error.message)
   }
 
-  return (data ?? []).map((row) => ({
-    id: row.id,
-    name: row.name,
-    value: row.value,
-    flag: row.flag,
-  }))
+  return sortByKey(
+    (data ?? []).map((row) => ({
+      id: row.id,
+      name: row.name,
+      value: row.value,
+      flag: row.flag,
+    })),
+    "id",
+  )
 }
 
 export async function fetchCharactersByWorld(worldUUID: string): Promise<NpcCardData[]> {
@@ -293,7 +304,7 @@ export async function fetchCharactersByWorld(worldUUID: string): Promise<NpcCard
     }),
   )
 
-  return characters
+  return sortByKey(characters, "id")
 }
 
 export async function fetchCharacterById(characterId: number): Promise<NpcCardData | null> {
