@@ -2,6 +2,7 @@
 
 import { createClient } from "@/shared/supabase/server"
 import type { Tables } from "@/shared/supabase/dbSchema"
+import { sortByKey } from "@/shared/utils/sortByKey"
 
 const MAX_USER_WORLDS = 4
 
@@ -63,7 +64,7 @@ export async function fetchUserWorlds(): Promise<UserWorldCardData[]> {
     throw new Error(error.message)
   }
 
-  return (data ?? []).map(mapWorldRow)
+  return sortByKey((data ?? []).map(mapWorldRow), "uuid", "desc")
 }
 
 export async function fetchWorldsWithUserCharacter(): Promise<UserWorldCardData[]> {
@@ -106,5 +107,5 @@ export async function fetchWorldsWithUserCharacter(): Promise<UserWorldCardData[
     throw new Error(worldsError.message)
   }
 
-  return (worlds ?? []).map(mapWorldRow)
+  return sortByKey((worlds ?? []).map(mapWorldRow), "uuid", "desc")
 }
