@@ -22,7 +22,7 @@ import WorldDataContextProvider from "@/shared/stores/WorldDataStore"
 import PlayerDataModalContextProvider from "@/modules/PlayerDataManager/components/PlayerDataModalContext"
 import CharacterDataContextProvider from "@/shared/stores/CharacterDataStore"
 import { redirect } from "next/navigation"
-import { Dialog } from "@base-ui/react"
+import ShareWorld from "@/components/ShareWorldModal"
 
 export default async function WorldPage({
   params,
@@ -63,11 +63,12 @@ export default async function WorldPage({
     if (!mapsIds) {
       return <p className="text-red-500">Maps not found</p>
     }
+    mapsIds.sort((a, b) => a.id - b.id)
     mapIdNumber = mapsIds.length > 0 ? mapsIds[0].id : null
   }
   const isUserOwner = world.owner === user.id
   return (
-    <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden">
+    <div className="relative h-[calc(100vh-3rem)] w-full overflow-hidden bg-[#1E1E1E]">
       <WorldDataContextProvider worldUUID={world.uuid}>
         {mapIdNumber && <WorldMap key={mapIdNumber} worldUUID={world.uuid} mapId={mapIdNumber} user={user} />}
         <BarMenu worldUUID={world.uuid} isOwner={isUserOwner} />
@@ -175,15 +176,5 @@ async function BarMenu({ worldUUID, isOwner }: { worldUUID: string; isOwner: boo
         </>
       )}
     </div>
-  )
-}
-
-function ShareWorld({ worldUUID }: { worldUUID: string }) {
-  return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <Image src="/svgs/link.svg" alt="Share" width={24} height={24} />
-      </Dialog.Trigger>
-    </Dialog.Root>
   )
 }
