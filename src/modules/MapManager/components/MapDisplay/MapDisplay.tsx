@@ -135,7 +135,7 @@ export default function MapDisplay({
       )}
       {isImageLoading && (
         <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/50">
-          <p className="animate-pulse text-white">Loading map...</p>
+          <p className="animate-pulse text-white">Загрузка карты...</p>
         </div>
       )}
       <div
@@ -150,7 +150,7 @@ export default function MapDisplay({
       >
         <Image
           src={mapImage}
-          alt={`Map '${mapName}'`}
+          alt={mapName ? `Карта «${mapName}»` : "Карта"}
           width={imageWidth}
           height={imageHeight}
           draggable={false}
@@ -181,23 +181,3 @@ export default function MapDisplay({
     </div>
   )
 }
-
-// export default async function MapDisplay() {
-//   const mapData = await fetchMapImage("1f15cc67-e53b-60d0-bb0f-72694ce2d375", 1)
-//   if (!mapData || !mapData.mapImageURL) {
-//     return <div>Critical error</div>
-//   }
-//   const { mapImageURL, imageWidth, imageHeight } = mapData
-//   return (
-//     <div className="flex h-full w-full items-center justify-center overflow-hidden">
-//       <Image
-//         src={mapImageURL}
-//         alt="Map"
-//         width={imageWidth}
-//         height={imageHeight}
-//         className="object-contain"
-//         unoptimized
-//       />
-//     </div>
-//   )
-// }
