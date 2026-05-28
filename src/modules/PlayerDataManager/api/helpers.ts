@@ -32,7 +32,7 @@ export async function insertWithGeneratedId<T extends Record<string, unknown>>(
   row: T,
 ): Promise<number> {
   let candidateId = await getNextRowId(supabase, table)
-  let lastError = "Insert failed"
+  let lastError = "Не удалось сохранить"
 
   for (let attempt = 0; attempt < MAX_INSERT_ATTEMPTS; attempt++) {
     const { data, error } = await supabase

@@ -17,7 +17,7 @@ async function getCurrentUserId(): Promise<string> {
     throw new Error(error.message)
   }
   if (!user) {
-    throw new Error("User not authenticated")
+    throw new Error("Пользователь не авторизован")
   }
   return user.id
 }
@@ -66,7 +66,7 @@ export async function updateWeapon(equipmentItemId: number, values: WeaponFormVa
   }
 
   if (!itemData) {
-    throw new Error("Weapon not found or update was blocked")
+    throw new Error("Оружие не найдено или обновление заблокировано")
   }
 
   const { data: weaponData, error: weaponError } = await supabase
@@ -85,14 +85,14 @@ export async function updateWeapon(equipmentItemId: number, values: WeaponFormVa
   }
 
   if (!weaponData) {
-    throw new Error("Weapon equipment row not found or update was blocked")
+    throw new Error("Запись экипировки не найдена или обновление заблокировано")
   }
 }
 
 export async function createSpell(characterId: number, values: SpellFormValues) {
   const level = parseSpellLevel(values.level)
   if (level === null) {
-    throw new Error("Invalid spell level")
+    throw new Error("Некорректный уровень заклинания")
   }
 
   const slotId = await getOrCreateSpellLevelSlot(characterId, level)
@@ -108,7 +108,7 @@ export async function createSpell(characterId: number, values: SpellFormValues) 
 export async function updateSpell(spellId: number, characterId: number, values: SpellFormValues) {
   const level = parseSpellLevel(values.level)
   if (level === null) {
-    throw new Error("Invalid spell level")
+    throw new Error("Некорректный уровень заклинания")
   }
 
   const slotId = await getOrCreateSpellLevelSlot(characterId, level)
@@ -130,7 +130,7 @@ export async function updateSpell(spellId: number, characterId: number, values: 
   }
 
   if (!data) {
-    throw new Error("Spell not found or update was blocked")
+    throw new Error("Заклинание не найдено или обновление заблокировано")
   }
 }
 
@@ -263,7 +263,7 @@ export async function updateCharacterCurrentHp(characterId: number, currentHp: n
   }
 
   if (!user || data.owner !== user.id) {
-    throw new Error("Not allowed to update HP")
+    throw new Error("Нет прав на изменение HP")
   }
 
   const clamped = Math.min(data.max_hp, Math.max(0, currentHp))
