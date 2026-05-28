@@ -69,7 +69,7 @@ export default function MapEditModalContextProvider({ children }: { children: Re
     console.log("Requesting map data")
     const [mapData, mapImage] = await Promise.all([fetchMapData(worldUUID, map.id), fetchMapImage(worldUUID, map.id)])
     if (!mapImage?.mapImageURL) {
-      throw new Error("Map image not found")
+      throw new Error("Изображение карты не найдено")
     }
     setExistingMap({
       mapId: mapData.id,
@@ -100,10 +100,10 @@ export default function MapEditModalContextProvider({ children }: { children: Re
               />
             </div>
           ) : (
-            <p className="text-sm text-red-300">Error while loading image</p>
+            <p className="text-sm text-red-300">Ошибка загрузки изображения</p>
           )}
           <div className="mt-4 flex flex-col gap-2">
-            <p className={PANEL_LABEL_CLASS}>Grid Size: {gridSize}</p>
+            <p className={PANEL_LABEL_CLASS}>Размер сетки: {gridSize}</p>
             <input
               type="range"
               min={10}
@@ -115,7 +115,7 @@ export default function MapEditModalContextProvider({ children }: { children: Re
           </div>
           <div className="mt-4 flex flex-col gap-1">
             <label className={PANEL_LABEL_CLASS} htmlFor="map-name-input">
-              Map Name
+              Название карты
             </label>
             <input
               id="map-name-input"
@@ -129,7 +129,7 @@ export default function MapEditModalContextProvider({ children }: { children: Re
           {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
           <div className="mt-6 flex items-center justify-between gap-3">
             <button className={PANEL_BUTTON_CLASS} disabled={isUploadPending} onClick={closeModal}>
-              Cancel
+              Отмена
             </button>
             <button
               className={PANEL_BUTTON_CLASS}
@@ -162,7 +162,7 @@ export default function MapEditModalContextProvider({ children }: { children: Re
                 })
               }}
             >
-              {isUploadPending ? "Saving..." : "Save"}
+              {isUploadPending ? "Сохранение..." : "Сохранено"}
             </button>
           </div>
         </div>
