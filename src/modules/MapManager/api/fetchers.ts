@@ -66,7 +66,7 @@ export async function fetchAllMaps(worldUUID: string): Promise<{ map: Tables<"ma
   const mapImagePromises = sortedMaps.map(async (map) => {
     const mapImage = await fetchMapImage(worldUUID, map.id)
     if (!mapImage?.mapImageURL) {
-      throw new Error("Map image not found")
+      throw new Error("Изображение карты не найдено")
     }
     return mapImage
   })
