@@ -11,7 +11,7 @@ export default async function CharacterPanel({ worldUUID }: { worldUUID: string 
     }
   } catch (error) {
     console.error(error)
-    return <p>Error fetching player character</p>
+    return <p className="text-red-400">Не удалось загрузить персонажа</p>
   }
 
   return <AddCharacterField />
