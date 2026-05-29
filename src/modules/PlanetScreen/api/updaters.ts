@@ -29,7 +29,7 @@ export async function createWorld(name: string, description: string): Promise<st
   const trimmedDescription = description.trim()
 
   if (!trimmedName) {
-    throw new Error("World name is required")
+    throw new Error("Укажите название мира")
   }
 
   const supabase = await createClient()
@@ -43,7 +43,7 @@ export async function createWorld(name: string, description: string): Promise<st
   }
 
   if (!user) {
-    throw new Error("User not authenticated")
+    throw new Error("Пользователь не авторизован")
   }
 
   const { count, error: countError } = await supabase
@@ -56,7 +56,7 @@ export async function createWorld(name: string, description: string): Promise<st
   }
 
   if ((count ?? 0) >= MAX_USER_WORLDS) {
-    throw new Error("Maximum number of worlds reached")
+    throw new Error("Достигнут лимит миров")
   }
 
   const uuid = generateUuidV7()

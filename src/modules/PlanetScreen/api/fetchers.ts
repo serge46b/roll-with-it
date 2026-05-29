@@ -15,12 +15,12 @@ export type UserWorldCardData = {
 
 function formatCreatedAtFromUuid(uuid: string): string {
   if (uuid[14] !== "7") {
-    return "Unknown date"
+    return "Неизвестная дата"
   }
   const timeHex = uuid.replace(/-/g, "").slice(0, 12)
   const ms = Number.parseInt(timeHex, 16)
   if (!Number.isFinite(ms)) {
-    return "Unknown date"
+    return "Неизвестная дата"
   }
   return new Date(ms).toLocaleDateString("ru-RU", {
     day: "numeric",
