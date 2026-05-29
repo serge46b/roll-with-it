@@ -33,7 +33,7 @@ export function InterfaceHp({
           className="cursor-pointer rounded-[30%] bg-green-500 p-1"
           onClick={() => changeHp(1)}
         >
-          <Image src="/Plus.svg" alt="Plus" width={20} height={20} />
+          <Image src="/Plus.svg" alt="Увеличить" width={20} height={20} />
         </button>
         <input
           type="text"
@@ -46,7 +46,7 @@ export function InterfaceHp({
           className="cursor-pointer rounded-[30%] bg-red-500 p-1"
           onClick={() => changeHp(-1)}
         >
-          <Image src="/Minus.svg" alt="Minus" width={20} height={20} />
+          <Image src="/Minus.svg" alt="Уменьшить" width={20} height={20} />
         </button>
       </div>
       <div className="flex flex-row">

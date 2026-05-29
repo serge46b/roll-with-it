@@ -115,7 +115,7 @@ function CreateWorldModalContent({
     <>
       <Dialog.Title className="text-center">Создать мир</Dialog.Title>
       <input type="text" placeholder="Название мира" ref={wroldNameInputRef} />
-      <textarea placeholder="Описание мирa" ref={wroldDescriptionTextareaRef} />
+      <textarea placeholder="Описание мира" ref={wroldDescriptionTextareaRef} />
       <button
         disabled={isPending}
         onClick={() =>

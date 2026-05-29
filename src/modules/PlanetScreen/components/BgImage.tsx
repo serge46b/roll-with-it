@@ -5,7 +5,7 @@ export default function BgImage() {
   return (
     <Image
       src="/top100/downsampled space.png"
-      alt="Background"
+      alt="Фон"
       fill
       priority
       className="object-cover opacity-0 transition-opacity duration-300"

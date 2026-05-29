@@ -7,8 +7,8 @@ export default function Planet({
   className,
   backgroundImage = DEFAULT_BACKGROUND_BLUR,
   shadow = DEFAULT_SHADOW,
-  title = "No name given",
-  createdAt = "Unknown date",
+  title = "Без названия",
+  createdAt = "Неизвестная дата",
   showAdd: showAddIcon = false,
   onClick = () => {},
 }: {

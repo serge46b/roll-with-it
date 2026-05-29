@@ -15,7 +15,7 @@ export default function ShareWorld({ worldUUID }: { worldUUID: string }) {
   return (
     <>
       <Dialog.Trigger handle={ShareWorldModalHandle}>
-        <Image src="/svgs/link.svg" alt="Share" width={24} height={24} />
+        <Image src="/svgs/link.svg" alt="Поделиться миром" width={24} height={24} />
       </Dialog.Trigger>
       <StyledModal handle={ShareWorldModalHandle}>
         <div className="flex flex-col gap-4 p-8">
@@ -38,9 +38,9 @@ export default function ShareWorld({ worldUUID }: { worldUUID: string }) {
                 }
               >
                 {isCopied ? (
-                  <Image src="/svgs/check.svg" alt="Copied" width={16} height={16} />
+                  <Image src="/svgs/check.svg" alt="Скопировано" width={16} height={16} />
                 ) : (
-                  <Image src="/svgs/send.svg" alt="Copy" width={16} height={16} />
+                  <Image src="/svgs/send.svg" alt="Копировать" width={16} height={16} />
                 )}
               </div>
             </span>
