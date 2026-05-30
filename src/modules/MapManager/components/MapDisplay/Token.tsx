@@ -29,7 +29,15 @@ export const Token = forwardRef<HTMLButtonElement, TokenProps>(function Token({ 
         ref={tokenRef}
       >
         {imageUrl ? (
-          <Image src={imageUrl} alt="" fill className="object-cover" sizes={`${tokenSize}px`} unoptimized />
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            className="pointer-events-none object-cover"
+            sizes={`${tokenSize}px`}
+            unoptimized
+            draggable={false}
+          />
         ) : null}
       </Tooltip.Trigger>
     </PrestyledTooltip>
