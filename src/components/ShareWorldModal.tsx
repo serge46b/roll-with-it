@@ -14,19 +14,17 @@ export default function ShareWorld({ worldUUID }: { worldUUID: string }) {
 
   return (
     <>
-      <Dialog.Trigger handle={ShareWorldModalHandle}>
-        <Image src="/svgs/link.svg" alt="Поделиться миром" width={24} height={24} />
+      <Dialog.Trigger handle={ShareWorldModalHandle} className="cursor-pointer bottom-0.5 right-0.5 fixed">
+        <Image src="/svgs/link.svg" alt="Share" width={24} height={24} />
       </Dialog.Trigger>
       <StyledModal handle={ShareWorldModalHandle}>
         <div className="flex flex-col gap-4 p-8">
-          <Dialog.Title className="text-center">Поделиться миром</Dialog.Title>
+          <Dialog.Title className="text-center text-2xl">Поделиться миром</Dialog.Title>
           {/* <Dialog.Description className="text-center"> */}
-          <div>
-            UID мира:{" "}
-            <span className={twclsx("font-bold", isClipboardPending && "animate-pulse")}>
-              {worldUUID}{" "}
+          <div className="flex flex-row gap-2 items-center justify-center">
+            <p>UID мира: {worldUUID}</p>
               <div
-                className="h-4 w-4 rounded-md border border-white/25 bg-black"
+                className="h-6 w-6 rounded-md"
                 onClick={() =>
                   startClipboardTransition(async () => {
                     await navigator.clipboard.writeText(worldUUID)
@@ -38,17 +36,15 @@ export default function ShareWorld({ worldUUID }: { worldUUID: string }) {
                 }
               >
                 {isCopied ? (
-                  <Image src="/svgs/check.svg" alt="Скопировано" width={16} height={16} />
+                  <Image src="/svgs/check.svg" alt="Copied" width={24} height={24} />
                 ) : (
-                  <Image src="/svgs/send.svg" alt="Копировать" width={16} height={16} />
+                  <Image src="/svgs/Copy.svg" alt="Copy" width={24} height={24} />
                 )}
               </div>
-            </span>
-            <br />
-            Коротенький текст о том, как делится
+            </div>
+            <p>Скопируйте ссылку на мир и отправьте её друзьям или в соцсети</p>
           </div>
           {/* </Dialog.Description> */}
-        </div>
       </StyledModal>
     </>
   )
