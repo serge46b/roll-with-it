@@ -43,7 +43,7 @@ export function DiceContent() {
         onChange={(e) => setMaxSides(e.target.value.replace(/\D/g, ""))}
       />
       <button type="button" className="cursor-pointer" onClick={rollFromInput}>
-        <Image src="/svgs/check.svg" alt="Check" width={32} height={32} />
+        <Image src="/svgs/check.svg" alt="Бросить" width={32} height={32} />
       </button>
     </div>
   )
