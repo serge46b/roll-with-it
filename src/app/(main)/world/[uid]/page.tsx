@@ -43,25 +43,25 @@ export default async function WorldPage({
     if (userError.status === 401) {
       redirect("/login")
     }
-    return <p className="text-red-500">Ошибка: {userError.message}</p>
+    return <p className="text-red-500">Error: {userError.message}</p>
   }
   if (!user) {
-    return <p className="text-red-500">Пользователь не найден</p>
+    return <p className="text-red-500">User not found</p>
   }
   const { data: world, error: worldError } = await supabase.from("world").select("*").eq("uuid", uid).single()
   if (worldError) {
-    return <p className="text-red-500">Ошибка: {worldError.message}</p>
+    return <p className="text-red-500">Error: {worldError.message}</p>
   }
   if (!world) {
-    return <p className="text-red-500">Мир не найден</p>
+    return <p className="text-red-500">World not found</p>
   }
   if (mapIdNumber === null) {
     const { data: mapsIds, error: mapsIdsError } = await supabase.from("map").select("id").eq("world", world.uuid)
     if (mapsIdsError) {
-      return <p className="text-red-500">Ошибка: {mapsIdsError.message}</p>
+      return <p className="text-red-500">Error: {mapsIdsError.message}</p>
     }
     if (!mapsIds) {
-      return <p className="text-red-500">Карты не найдены</p>
+      return <p className="text-red-500">Maps not found</p>
     }
     mapsIds.sort((a, b) => a.id - b.id)
     mapIdNumber = mapsIds.length > 0 ? mapsIds[0].id : null
@@ -80,11 +80,11 @@ export default async function WorldPage({
 async function WorldMap({ worldUUID, mapId, user }: { worldUUID: string; mapId: number; user: User }) {
   const mapImage = await fetchMapImage(worldUUID, mapId)
   if (!mapImage?.mapImageURL) {
-    return <p className="text-red-500">Изображение карты не найдено</p>
+    return <p className="text-red-500">Map image not found</p>
   }
   const mapData = await fetchMapData(worldUUID, mapId)
   if (!mapData) {
-    return <p className="text-red-500">Данные карты не найдены</p>
+    return <p className="text-red-500">Map data not found</p>
   }
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -105,12 +105,12 @@ async function Tokens({ worldUUID, user, gridSize }: { worldUUID: string; user: 
   const supabase = await createClient()
   const { data: tokens, error: tokensError } = await supabase.from("character").select("*").eq("world", worldUUID)
   if (tokensError) {
-    return <p className="text-red-500">Ошибка: {tokensError.message}</p>
+    return <p className="text-red-500">Error: {tokensError.message}</p>
   }
   const tokenImages = await Promise.all(tokens?.map((token: Tables<"character">) => fetchTokenImage(token.id)) || [])
   return tokens?.map((token: Tables<"character">, index) =>
     token.owner === user.id ? (
-      <DraggingToken key={token.id} data={token} gridSize={gridSize} />
+      <DraggingToken key={token.id} data={token} gridSize={gridSize} imageUrl={tokenImages[index]} />
     ) : (
       <MovingToken key={token.id} data={token} gridSize={gridSize} imageUrl={tokenImages[index]} />
     ),
@@ -124,7 +124,7 @@ async function BarMenu({ worldUUID, isOwner }: { worldUUID: string; isOwner: boo
   } catch (error) {
     if (!isOwner) {
       console.error(error)
-      return <p className="text-red-500">Ошибка: {(error as Error).message}</p>
+      return <p className="text-red-500">Error: {(error as Error).message}</p>
     }
   }
   return (
@@ -132,7 +132,7 @@ async function BarMenu({ worldUUID, isOwner }: { worldUUID: string; isOwner: boo
       <div className="w-15">
         <RollDiceModalContextProvider>
           <MenuBlock
-            titleContent={<Image src="/svgs/d20.svg" alt="Кости" width={24} height={24} />}
+            titleContent={<Image src="/svgs/d20.svg" alt="Dice" width={24} height={24} />}
             stickSide={Side.BOTTOM}
           >
             <DiceContent />
