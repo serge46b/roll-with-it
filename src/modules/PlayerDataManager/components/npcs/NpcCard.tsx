@@ -48,9 +48,11 @@ export function NpcCard({ data, className }: NpcCardProps) {
             alt={data.name}
             width={48}
             height={48}
-            className="h-[3em] w-[3em] shrink-0 rounded-full border-2 object-cover"
+            className="pointer-events-none h-[3em] w-[3em] shrink-0 rounded-full border-2 object-cover"
             style={{ borderColor: data.accentColor }}
             unoptimized
+            draggable={false}
+            onDragStart={(e) => e.preventDefault()}
           />
         ) : (
           <div

@@ -17,10 +17,7 @@ import {
 } from "../cardStyles"
 import { CharacterHpSection } from "../../charHp/CharacterHpSection"
 import type { PlayerCharacterCardData } from "../../types/PlayerDataTypes"
-import {
-  formatAbilityModifier,
-  getAbilityModifier,
-} from "../../types/PlayerDataTypes"
+import { formatAbilityModifier, getAbilityModifier } from "../../types/PlayerDataTypes"
 
 interface PlayerCharacterCardProps {
   data: PlayerCharacterCardData
@@ -63,9 +60,11 @@ export function PlayerCharacterCard({ data, className }: PlayerCharacterCardProp
               alt={data.name}
               width={56}
               height={56}
-              className="h-[3.5em] w-[3.5em] shrink-0 rounded-full border-2 object-cover"
+              className="pointer-events-none h-[3.5em] w-[3.5em] shrink-0 rounded-full border-2 object-cover"
               style={{ borderColor: data.accentColor }}
               unoptimized
+              draggable={false}
+              onDragStart={(e) => e.preventDefault()}
             />
           ) : (
             <div
