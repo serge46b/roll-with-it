@@ -5,13 +5,15 @@ export default function BgImage() {
   return (
     <Image
       src="/top100/downsampled space.png"
-      alt="Фон"
+      alt="Background"
       fill
       priority
-      className="object-cover opacity-0 transition-opacity duration-300"
+      className="pointer-events-none object-cover opacity-0 transition-opacity duration-300"
       onLoad={(e) => {
         ;(e.target as HTMLImageElement).style.opacity = "1"
       }}
+      draggable={false}
+      onDragStart={(e) => e.preventDefault()}
     />
   )
 }
