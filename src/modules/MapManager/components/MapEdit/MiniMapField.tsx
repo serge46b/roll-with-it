@@ -15,12 +15,12 @@ export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; ma
   if (!map) return <></>
   return (
     <article className="relative w-full overflow-hidden rounded-[0.5em] border border-white/25 bg-black/40 text-[length:1em] text-white">
-      <p className="relative truncate bg-black/75 px-[0.75em] py-[0.55em] text-[0.9em] font-medium tracking-wide text-white">
+      <p className="relative z-10 truncate bg-black/75 px-[0.75em] py-[0.55em] text-[0.9em] font-medium tracking-wide text-white">
         {map.name}
       </p>
       <button
         className={twclsx(
-          "absolute top-[0.5em] right-[0.25em] rounded-md border border-white/30 bg-black/60 px-[0.55em] py-[0.25em] text-[0.72em] font-medium text-white transition-colors hover:bg-black/75",
+          "absolute top-[0.5em] right-[0.25em] z-20 rounded-md border border-white/30 bg-black/60 px-[0.55em] py-[0.25em] text-[0.72em] font-medium text-white transition-colors hover:bg-black/75",
           isOpenModalPending && "animate-pulse",
         )}
         onClick={() => {
@@ -38,6 +38,8 @@ export default function MiniMapField({ mapImage, map }: { mapImage: MapImage; ma
           fill
           sizes="100vw"
           className="object-cover"
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
           unoptimized
           onClick={() => {
             router.push(`/world/${map.world}?mapId=${map.id}`)
