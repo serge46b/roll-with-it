@@ -3,7 +3,6 @@
 import { createClient } from "@/shared/supabase/server"
 import { MapImage } from "../types/MapTypes"
 import { Tables } from "@/shared/supabase/dbSchema"
-import { sortByKey } from "@/shared/utils/sortByKey"
 
 export async function fetchMapImage(worldUUID: string, mapId: number): Promise<MapImage | null> {
   const supabase = await createClient()
@@ -62,16 +61,15 @@ export async function fetchAllMaps(worldUUID: string): Promise<{ map: Tables<"ma
   if (error) {
     throw new Error(error.message)
   }
-  const sortedMaps = sortByKey(data, "id")
-  const mapImagePromises = sortedMaps.map(async (map) => {
+  const mapImagePromises = data.map(async (map) => {
     const mapImage = await fetchMapImage(worldUUID, map.id)
     if (!mapImage?.mapImageURL) {
-      throw new Error("Изображение карты не найдено")
+      throw new Error("Map image not found")
     }
     return mapImage
   })
   const mapImages = await Promise.all(mapImagePromises)
-  return sortedMaps.map((map, index) => ({
+  return data.map((map, index) => ({
     map,
     mapImage: {
       mapImageURL: mapImages[index].mapImageURL,

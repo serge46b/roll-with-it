@@ -43,3 +43,12 @@ export async function uploadMapImage(
   }
   return data
 }
+
+export async function updateMapData(mapId: number, mapName: string, gridScale: number) {
+  const supabase = createClient()
+  const { data, error } = await supabase.from("map").update({ name: mapName, grid_scale_px: gridScale }).eq("id", mapId)
+  if (error) {
+    throw new Error(error.message)
+  }
+  return data
+}
