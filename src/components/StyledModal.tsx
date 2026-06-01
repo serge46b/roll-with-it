@@ -4,12 +4,13 @@ import { Dialog } from "@base-ui/react"
 import { ReactNode } from "react"
 
 // TODO: Style it later
-export function StyledModal({ children, handle }: { children: ReactNode; handle?: Dialog.Handle<unknown> }) {
+export function StyledModal({children, handle, initialFocus = true,}: {children: ReactNode; handle?: Dialog.Handle<unknown>; initialFocus?: boolean}) {
   return (
     <Dialog.Root handle={handle}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 min-h-dvh bg-black opacity-20 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-touch-callout:none]:absolute dark:opacity-50" />
-        <Dialog.Popup className="fixed top-1/2 left-1/2 -mt-8 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-4 shadow-[0.25rem_0.25rem_0] shadow-black/12 transition-[scale,opacity] duration-100 ease-out data-ending-style:scale-[0.98] data-ending-style:opacity-0 data-starting-style:scale-[0.98] data-starting-style:opacity-0">
+        <Dialog.Popup
+          initialFocus={initialFocus} className="fixed top-1/2 left-1/2 -mt-8 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-4 shadow-[0.25rem_0.25rem_0] shadow-black/12 transition-[scale,opacity] duration-100 ease-out data-ending-style:scale-[0.98] data-ending-style:opacity-0 data-starting-style:scale-[0.98] data-starting-style:opacity-0">
           <Frame>{children}</Frame>
         </Dialog.Popup>
       </Dialog.Portal>
