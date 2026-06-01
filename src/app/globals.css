@@ -49,11 +49,12 @@ body {
       70px 40px,
       160px 120px;
   }
+
   to {
     background-position:
-      140px -140px,
-      290px -180px,
-      480px -200px;
+      280px -280px,
+      350px -240px,
+      440px -160px;
   }
 }
 
