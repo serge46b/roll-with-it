@@ -98,11 +98,11 @@ export function FileUploadField({
     <label
       className={twclsx(
         "flex w-full flex-col content-center items-center justify-center rounded-xl border p-10 text-8xl transition-colors duration-300",
-        "border-gray-300 bg-gray-100/60 text-gray-500 hover:border-gray-400 hover:bg-gray-200/60 hover:text-gray-800",
+        "flex h-[3.5em] w-full cursor-pointer items-center justify-center rounded-[0.45em] border border-dashed border-white/35 bg-transparent text-[length:1em] text-white/70 transition-colors hover:border-white/60 hover:text-white",
         {
           "border-gray-200 bg-gray-100 text-gray-400 hover:border-gray-200 hover:bg-gray-100 hover:text-gray-400":
             disabled,
-          "flex-row gap-4 px-2 py-6 text-2xl": inline,
+          "flex-row gap-4 px-2 py-6 text-1xl": inline,
           "border-gray-400 bg-gray-200/70 text-gray-900": isDragOver,
           "border-red-400 bg-red-50 text-red-700 hover:border-red-400 hover:bg-red-50 hover:text-red-700": isError,
         },
