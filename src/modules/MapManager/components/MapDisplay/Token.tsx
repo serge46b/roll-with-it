@@ -1,0 +1,45 @@
+import Image from "next/image"
+import PrestyledTooltip from "@/components/PrestyledTooltip"
+import { Tables } from "@/shared/supabase/dbSchema"
+import { Tooltip } from "@base-ui/react/tooltip"
+import { forwardRef } from "react"
+import { grid2world } from "../../helpers/CoordTransformers"
+
+interface TokenProps {
+  data: Tables<"character">
+  imageUrl?: string
+  gridSize: number
+}
+export const Token = forwardRef<HTMLButtonElement, TokenProps>(function Token({ data, imageUrl, gridSize }, tokenRef) {
+  const tokenSize = gridSize * 0.9
+  const { xInWorld, yInWorld } = grid2world(data.pos_x ?? 0, data.pos_y ?? 0, gridSize)
+  return (
+    <PrestyledTooltip label={data.name} detail={`${data.current_hp}/${data.max_hp} HP`}>
+      <Tooltip.Trigger
+        delay={150}
+        aria-label={`${data.name}, ${data.current_hp} из ${data.max_hp} HP`}
+        className="absolute overflow-hidden rounded-full border-[0.2em] border-white shadow-[0_0.2em_0.5em_rgba(0,0,0,0.45)]"
+        style={{
+          backgroundColor: imageUrl ? undefined : data.color,
+          width: `${tokenSize}px`,
+          height: `${tokenSize}px`,
+          left: `${xInWorld + (gridSize - tokenSize) / 2}px`,
+          top: `${yInWorld + (gridSize - tokenSize) / 2}px`,
+        }}
+        ref={tokenRef}
+      >
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            className="pointer-events-none object-cover"
+            sizes={`${tokenSize}px`}
+            unoptimized
+            draggable={false}
+          />
+        ) : null}
+      </Tooltip.Trigger>
+    </PrestyledTooltip>
+  )
+})
