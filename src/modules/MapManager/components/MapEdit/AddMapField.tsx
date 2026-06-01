@@ -19,7 +19,7 @@ export default function AddMapField() {
           })
         }}
         accept="image/*"
-        placeholder="Загрузить карту"
+        placeholder=""
         inline
       />
     </div>
