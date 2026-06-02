@@ -19,7 +19,7 @@ export function MenuBlock({
   return (
     <div
       className={twclsx(
-        "flex w-full max-w-85 min-w-0 flex-col items-center overflow-hidden bg-black/70 transition-all duration-300",
+        "flex w-full max-w-95 min-w-0 flex-col items-center overflow-hidden bg-black/70 transition-all duration-300",
         className,
       )}
       style={{
