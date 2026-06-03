@@ -10,7 +10,8 @@ export default function MovingToken({ data, gridSize }: { data: TokenData; gridS
 
   useEffect(() => {
     return subscribeToTokenChanges(data.id, (newData) => {
-      setCurrentData((prev) => ({ ...prev, ...newData }))
+      // @ts-ignore
+      setCurrentData((prev) => ({ ...prev, ...newData }))  
     })
   }, [data.id])
 

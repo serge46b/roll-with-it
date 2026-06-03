@@ -35,6 +35,8 @@ export function subscribeToTokenChanges(tokenId: number, listener: (newData: Cha
         { event: "UPDATE", schema: "public", table: "character", filter: `id=eq.${tokenId}` },
         (payload) => {
           const newData = payload.new as Character
+          newData.pos_x = newData.pos_x || 0
+          newData.pos_y = newData.pos_y || 0
           listener(newData)
         },
       )

@@ -18,7 +18,7 @@ export default function Planet({
   title?: string
   createdAt?: string
   showAdd?: boolean
-  onClick: () => void
+  onClick?: () => void
 }) {
   return (
     <div
